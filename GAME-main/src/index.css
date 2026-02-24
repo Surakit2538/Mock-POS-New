@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Prompt", ui-sans-serif, system-ui, sans-serif;
+  --animate-rise: rise 1s infinite linear;
+  --animate-slosh: slosh 0.4s infinite ease-in-out;
+  --keyframes-rise: {
+    "0%": { transform: "translateY(0) scale(1)", opacity: "0" },
+    "10%": { opacity: "1" },
+    "90%": { opacity: "1" },
+    "100%": { transform: "translateY(-100px) scale(1.5)", opacity: "0" }
+  };
+  --keyframes-slosh: {
+    "0%, 100%": { transform: "rotate(0deg) scale(1)" },
+    "25%": { transform: "rotate(1deg) scale(1.02)" },
+    "75%": { transform: "rotate(-1deg) scale(1.02)" }
+  };
+}
+
+@layer utilities {
+  .animate-rise {
+    animation: rise 1s infinite linear;
+  }
+  .animate-slosh {
+    animation: slosh 0.4s infinite ease-in-out;
+  }
+}
+
+@keyframes rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+}
+
+@keyframes slosh {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(1deg) scale(1.02); }
+  75% { transform: rotate(-1deg) scale(1.02); }
+}

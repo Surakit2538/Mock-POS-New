@@ -1,0 +1,5 @@
+{
+  "name": "Spill & Lose",
+  "description": "A local multiplayer game where players take turns pouring water into a glass. Don't let it overflow!",
+  "requestFramePermissions": []
+}
