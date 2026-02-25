@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Home, Search, ShoppingBag, Settings, Utensils, Coffee, Pizza, IceCream, Clock, CakeSlice, Gamepad2 } from 'lucide-react';
 import { Product, Table } from '../types';
 
-export function HomeScreen({ products, onNavigate, customerTable }: { products: Product[], onNavigate: (screen: 'home' | 'detail' | 'cart', product?: Product) => void, customerTable?: Table | null }) {
+export function HomeScreen({ products, onNavigate, customerTable, cartItemCount }: { products: Product[], onNavigate: (screen: 'home' | 'detail' | 'cart', product?: Product) => void, customerTable?: Table | null, cartItemCount?: number }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -87,7 +87,14 @@ export function HomeScreen({ products, onNavigate, customerTable }: { products: 
           <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-400 rounded-full"></span>
         </button>
         <button className="text-gray-400 hover:text-white transition-colors" onClick={() => document.querySelector('input')?.focus()}><Search size={24} /></button>
-        <button className="text-gray-400 hover:text-white transition-colors" onClick={() => onNavigate('cart')}><ShoppingBag size={24} /></button>
+        <button className="text-gray-400 hover:text-white transition-colors relative" onClick={() => onNavigate('cart')}>
+          <ShoppingBag size={24} />
+          {cartItemCount && cartItemCount > 0 ? (
+            <span className="absolute -top-1 -right-2 bg-yellow-400 text-black text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-[#1A1A1A]">
+              {cartItemCount}
+            </span>
+          ) : null}
+        </button>
         <button className="text-gray-400 hover:text-white transition-colors"><Gamepad2 size={24} /></button>
       </div>
     </div>

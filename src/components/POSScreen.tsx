@@ -109,6 +109,10 @@ export function POSScreen({
       setIsPaymentModalOpen(false);
       setPaymentSuccess(false);
       setPaymentMethod('none');
+      if (selectedTable) {
+        setTables(prev => prev.map(t => t.id === selectedTable.id ? { ...t, status: 'free', detail: 'Free', items: [] } : t));
+        setSelectedTable(null);
+      }
       handleSetCart([]);
       setMember(null);
     }, 3000);
