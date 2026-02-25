@@ -7,6 +7,7 @@ import { CDPScreen } from './components/CDPScreen';
 import { Product, CartItem, Table } from './types';
 import { products } from './data';
 import { Monitor, Smartphone, PieChart } from 'lucide-react';
+import { CDPDataProvider } from './contexts/CDPDataContext';
 
 export default function App() {
   const [appMode, setAppMode] = useState<'customer' | 'pos' | 'cdp'>('pos');
@@ -84,67 +85,69 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans relative">
-      {/* Mode Switcher */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:-translate-x-0 lg:left-auto lg:top-4 lg:right-4 lg:bottom-auto z-[100] flex bg-white rounded-xl lg:rounded-lg shadow-2xl lg:shadow-lg overflow-hidden border border-gray-200 whitespace-nowrap">
-        <button
-          onClick={() => setAppMode('customer')}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'customer' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
-        >
-          <Smartphone size={16} />
-          Mobile App
-        </button>
-        <div className="w-px bg-gray-200"></div>
-        <button
-          onClick={() => setAppMode('pos')}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'pos' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
-        >
-          <Monitor size={16} />
-          POS System
-        </button>
-        <div className="w-px bg-gray-200"></div>
-        <button
-          onClick={() => setAppMode('cdp')}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'cdp' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
-        >
-          <PieChart size={16} />
-          CDP System
-        </button>
-      </div>
-
-      {appMode === 'customer' ? (
-        <div className="flex items-center justify-center min-h-screen p-0 sm:p-8">
-          <div className="w-full h-[100dvh] sm:h-[850px] sm:max-h-[90vh] sm:max-w-[400px] bg-white sm:rounded-[40px] shadow-2xl overflow-hidden relative">
-            {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} customerTable={customerTableInfo} cartItemCount={cart.reduce((acc, item) => acc + item.quantity, 0)} />}
-            {currentScreen === 'detail' && selectedProduct && <DetailScreen product={selectedProduct} onNavigate={navigateTo} onAddToCart={(qty) => addToCart(selectedProduct, qty)} />}
-            {currentScreen === 'cart' && <CartScreen cart={cart} onNavigate={navigateTo} onUpdateQuantity={updateQuantity} onCheckout={handleCustomerCheckout} />}
-          </div>
+    <CDPDataProvider>
+      <div className="min-h-screen bg-gray-100 font-sans relative">
+        {/* Mode Switcher */}
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:-translate-x-0 lg:left-auto lg:top-4 lg:right-4 lg:bottom-auto z-[100] flex bg-white rounded-xl lg:rounded-lg shadow-2xl lg:shadow-lg overflow-hidden border border-gray-200 whitespace-nowrap">
+          <button
+            onClick={() => setAppMode('customer')}
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'customer' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+          >
+            <Smartphone size={16} />
+            Mobile App
+          </button>
+          <div className="w-px bg-gray-200"></div>
+          <button
+            onClick={() => setAppMode('pos')}
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'pos' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+          >
+            <Monitor size={16} />
+            POS System
+          </button>
+          <div className="w-px bg-gray-200"></div>
+          <button
+            onClick={() => setAppMode('cdp')}
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'cdp' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+          >
+            <PieChart size={16} />
+            CDP System
+          </button>
         </div>
-      ) : appMode === 'pos' ? (
-        <POSScreen
-          products={globalProducts}
-          tables={tables}
-          setTables={setTables}
-          cartItems={cart.map(c => ({ product: c.product, qty: c.quantity, orderedBy: c.orderedBy, status: c.status }))}
-          setCartItems={(newItems) => {
-            // Unwrap Dispatcher format to array if needed, standard is function or array
-            const items = typeof newItems === 'function' ? newItems(cart.map(c => ({ product: c.product, qty: c.quantity, orderedBy: c.orderedBy, status: c.status }))) : newItems;
 
-            // Map {product, qty} back to CartItem
-            setCart(items.map((item, idx) => ({
-              id: `mapped-${idx}`,
-              product: item.product,
-              quantity: item.qty,
-              size: 'M', // default size for fallback
-              orderedBy: item.orderedBy || 'staff',
-              status: item.status || 'pending'
-            })));
-          }}
-          onSimulateCustomerScan={handleSimulateCustomerScan}
-        />
-      ) : (
-        <CDPScreen products={globalProducts} setProducts={setGlobalProducts} tables={tables} setTables={setTables} />
-      )}
-    </div>
+        {appMode === 'customer' ? (
+          <div className="flex items-center justify-center min-h-screen p-0 sm:p-8">
+            <div className="w-full h-[100dvh] sm:h-[850px] sm:max-h-[90vh] sm:max-w-[400px] bg-white sm:rounded-[40px] shadow-2xl overflow-hidden relative">
+              {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} customerTable={customerTableInfo} cartItemCount={cart.reduce((acc, item) => acc + item.quantity, 0)} />}
+              {currentScreen === 'detail' && selectedProduct && <DetailScreen product={selectedProduct} onNavigate={navigateTo} onAddToCart={(qty) => addToCart(selectedProduct, qty)} />}
+              {currentScreen === 'cart' && <CartScreen cart={cart} onNavigate={navigateTo} onUpdateQuantity={updateQuantity} onCheckout={handleCustomerCheckout} />}
+            </div>
+          </div>
+        ) : appMode === 'pos' ? (
+          <POSScreen
+            products={globalProducts}
+            tables={tables}
+            setTables={setTables}
+            cartItems={cart.map(c => ({ product: c.product, qty: c.quantity, orderedBy: c.orderedBy, status: c.status }))}
+            setCartItems={(newItems) => {
+              // Unwrap Dispatcher format to array if needed, standard is function or array
+              const items = typeof newItems === 'function' ? newItems(cart.map(c => ({ product: c.product, qty: c.quantity, orderedBy: c.orderedBy, status: c.status }))) : newItems;
+
+              // Map {product, qty} back to CartItem
+              setCart(items.map((item, idx) => ({
+                id: `mapped-${idx}`,
+                product: item.product,
+                quantity: item.qty,
+                size: 'M', // default size for fallback
+                orderedBy: item.orderedBy || 'staff',
+                status: item.status || 'pending'
+              })));
+            }}
+            onSimulateCustomerScan={handleSimulateCustomerScan}
+          />
+        ) : (
+          <CDPScreen products={globalProducts} setProducts={setGlobalProducts} tables={tables} setTables={setTables} />
+        )}
+      </div>
+    </CDPDataProvider>
   );
 }

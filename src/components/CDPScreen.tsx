@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { User, Calendar, Phone, Mail, MessageCircle, BarChart, Activity, PieChart, Users, GitMerge, Send, Search, Settings, Coffee, Utensils, TrendingUp, Edit3, Trash2, Plus } from 'lucide-react';
+import { User, Calendar, Phone, Mail, MessageCircle, BarChart, Activity, PieChart, Users, GitMerge, Send, Search, Settings, Coffee, Utensils, TrendingUp, Edit3, Trash2, Plus, ShieldCheck, Target, Shield, CheckCircle, AlertTriangle, FileText, List, ExternalLink } from 'lucide-react';
 import { Product, Table } from '../types';
+import { useCDP } from '../contexts/CDPDataContext';
 
 export function CDPScreen({
     products, setProducts,
@@ -9,7 +10,21 @@ export function CDPScreen({
     products: Product[]; setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
     tables: Table[]; setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 }) {
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'insight' | 'analysis' | 'setting'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'insight' | 'segmentation' | 'privacy' | 'setting'>('dashboard');
+    const { customers, transactions, registerLineAccount } = useCDP();
+
+    // Customer 360 State
+    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(customers.length > 0 ? customers[0].id : null);
+    const [isDataMasked, setIsDataMasked] = useState(true);
+
+    const activeCustomer = customers.find(c => c.id === selectedCustomerId);
+    const customerTransactions = transactions.filter(tx => tx.customerId === selectedCustomerId);
+
+    // Calculate Dashboard Stats
+    const totalRevenue = transactions.reduce((sum, tx) => sum + tx.totalAmount, 0);
+    const completedOrders = transactions.length;
+    const activeTablesCount = tables.filter(t => t.status === 'checked-in').length;
+    const reservationsCount = tables.filter(t => t.status === 'reserved').length;
 
     const topProduct = products[8] || products[0];
     const secondProduct = products[0] || products[0];
@@ -93,28 +108,35 @@ export function CDPScreen({
                     <button
                         title="Analytics Dashboard"
                         onClick={() => setActiveTab('dashboard')}
-                        className={`p-3 rounded-xl transition-all ${activeTab === 'dashboard' ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
+                        className={`p-3 rounded-xl transition-all ${activeTab === 'dashboard' ? 'bg-yellow-100 text-yellow-700' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
                     >
                         <BarChart size={24} />
                     </button>
                     <button
-                        title="Customer Insight"
+                        title="Customer 360"
                         onClick={() => setActiveTab('insight')}
-                        className={`p-3 rounded-xl transition-all ${activeTab === 'insight' ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
+                        className={`p-3 rounded-xl transition-all ${activeTab === 'insight' ? 'bg-yellow-100 text-yellow-700' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
                     >
                         <Users size={24} />
                     </button>
                     <button
-                        title="Product Analysis"
-                        onClick={() => setActiveTab('analysis')}
-                        className={`p-3 rounded-xl transition-all ${activeTab === 'analysis' ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
+                        title="Segmentation & LINE Promo"
+                        onClick={() => setActiveTab('segmentation')}
+                        className={`p-3 rounded-xl transition-all ${activeTab === 'segmentation' ? 'bg-yellow-100 text-yellow-700' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
                     >
-                        <TrendingUp size={24} />
+                        <Target size={24} />
                     </button>
                     <button
-                        title="Settings"
+                        title="Privacy Center (PDPA)"
+                        onClick={() => setActiveTab('privacy')}
+                        className={`p-3 rounded-xl transition-all ${activeTab === 'privacy' ? 'bg-yellow-100 text-yellow-700' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <ShieldCheck size={24} />
+                    </button>
+                    <button
+                        title="Store Settings"
                         onClick={() => setActiveTab('setting')}
-                        className={`p-3 rounded-xl transition-all ${activeTab === 'setting' ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
+                        className={`p-3 rounded-xl transition-all ${activeTab === 'setting' ? 'bg-yellow-100 text-yellow-700' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'}`}
                     >
                         <Settings size={24} />
                     </button>
@@ -177,7 +199,7 @@ export function CDPScreen({
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition duration-300 shadow-sm"><TrendingUp size={16} className="text-yellow-600" /></div>
                                 <div>
                                     <p className="text-yellow-900 text-sm font-bold mb-2">Total Revenue</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-white mb-6 tracking-tight drop-shadow-sm">฿ 45k</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-white mb-6 tracking-tight drop-shadow-sm">฿ {totalRevenue.toLocaleString()}</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 bg-yellow-600/30 px-2 py-1.5 rounded-xl border border-yellow-400/20 backdrop-blur-sm">
                                     <div className="bg-yellow-100 text-yellow-700 text-[10px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5">5<TrendingUp size={10} /></div>
@@ -190,7 +212,7 @@ export function CDPScreen({
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
                                     <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Completed Orders</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">142</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">{completedOrders}</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
                                     <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">12<TrendingUp size={10} /></div>
@@ -203,7 +225,7 @@ export function CDPScreen({
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
                                     <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Active Tables</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">12</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">{activeTablesCount}</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
                                     <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">2<TrendingUp size={10} /></div>
@@ -216,7 +238,7 @@ export function CDPScreen({
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
                                     <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Reservations</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">8</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">{reservationsCount}</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-emerald-500">
                                     <p className="text-sm font-bold">Waiting List</p>
@@ -259,55 +281,68 @@ export function CDPScreen({
                                 </div>
                             </div>
 
-                            {/* Project / Top Items */}
+                            {/* Real-time POS Data Stream */}
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-lg font-bold text-gray-900">Kitchen Alerts</h3>
-                                    <button className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-[11px] font-bold text-gray-600 flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> New</button>
+                                    <h3 className="text-lg font-bold text-gray-900">Live POS Stream</h3>
+                                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div><span className="text-[11px] font-bold text-emerald-600">Syncing</span></div>
                                 </div>
-                                <div className="space-y-5 flex-1 mt-2">
-                                    {[
-                                        { name: 'Table 5 - Waiting Food', date: 'Overdue: 15 mins', icon: '✦', color: 'text-red-500 bg-red-50' },
-                                        { name: 'New Online Order #102', date: 'Pending acceptance', icon: '❂', color: 'text-blue-600 bg-blue-50' },
-                                        { name: 'Low Stock: Salmon', date: 'Remaining: 2 KG', icon: '✽', color: 'text-yellow-600 bg-yellow-50' },
-                                        { name: 'Table 8 - Check Bill', date: 'Waiting for staff', icon: '◔', color: 'text-emerald-500 bg-emerald-50' },
-                                        { name: 'VIP Customer Joined', date: 'Table 2', icon: '✿', color: 'text-purple-600 bg-purple-50' }
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center gap-4 group cursor-pointer">
-                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0 ${item.color} group-hover:scale-110 transition`}>{item.icon}</div>
+                                <div className="space-y-5 flex-1 mt-2 overflow-y-auto max-h-[300px] no-scrollbar">
+                                    {transactions.slice(0, 5).map((tx, i) => (
+                                        <div key={tx.id} className="flex items-center gap-4 group cursor-pointer">
+                                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0 text-blue-600 bg-blue-50 group-hover:scale-110 transition"><Activity size={14} /></div>
                                             <div className="flex-1">
-                                                <p className="text-sm font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition">{item.name}</p>
-                                                <p className="text-[10px] font-medium text-gray-400 mt-0.5">{item.date}</p>
+                                                <p className="text-sm font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition truncate max-w-[150px]">Table {tx.tableNumber} Checkout</p>
+                                                <p className="text-[10px] font-medium text-gray-400 mt-0.5">{new Date(tx.timestamp).toLocaleTimeString()}</p>
                                             </div>
+                                            <div className="font-bold text-sm text-gray-900">฿{tx.totalAmount}</div>
                                         </div>
                                     ))}
+                                    {transactions.length === 0 && (
+                                        <div className="text-sm text-gray-400 text-center mt-4">No active stream</div>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* Team Collaboration / Customer Feed */}
-                            <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
+                            {/* Recent Transactions (Resolved Customers) */}
+                            <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-lg font-bold text-gray-900">Recent Transactions</h3>
+                                    <h3 className="text-lg font-bold text-gray-900">Recent Transactions & Identity Resolution</h3>
                                     <button className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-full text-[11px] font-bold flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> View All</button>
                                 </div>
-                                <div className="space-y-4 flex-1">
-                                    {[
-                                        { name: 'Alexandra Deff', action: 'Table 5 - Dinner Course', status: 'Completed', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', img: '1' },
-                                        { name: 'Edwin Adenike', action: 'Takeaway - Order #142', status: 'In Kitchen', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '11' },
-                                        { name: 'Isaac Oluwatemilorun', action: 'Table 8 - Family Set', status: 'Pending', statusBg: 'bg-red-50', statusText: 'text-red-500', img: '33' },
-                                        { name: 'David Oshodi', action: 'Delivery - GrabFood', status: 'On the way', statusBg: 'bg-blue-50', statusText: 'text-blue-600', img: '12' },
-                                    ].map((c, i) => (
-                                        <div key={i} className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-2 pb-2 group">
-                                            <div className="w-10 h-10 rounded-full bg-yellow-100 p-0.5 shrink-0 overflow-hidden">
-                                                <img src={`https://i.pravatar.cc/150?img=${c.img}`} className="w-full h-full rounded-full object-cover" alt="avatar" />
+                                <div className="space-y-4 flex-1 overflow-y-auto max-h-[300px] no-scrollbar">
+                                    {transactions.map((tx, i) => {
+                                        const customer = tx.customerId ? customers.find(c => c.id === tx.customerId) : null;
+                                        const name = customer ? customer.name : 'Unknown Guest';
+                                        const phone = customer ? customer.phone : (tx.phoneProvided || 'No Phone');
+                                        const isIdentified = !!customer;
+                                        const statusBg = isIdentified ? 'bg-emerald-50' : 'bg-gray-100';
+                                        const statusText = isIdentified ? 'text-emerald-600' : 'text-gray-500';
+                                        const statusTextVal = isIdentified ? 'Identified' : 'Anonymous';
+
+                                        return (
+                                            <div key={tx.id} className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-2 pb-2 group border-b border-gray-50 last:border-0">
+                                                <div className="w-10 h-10 rounded-full bg-yellow-100 p-0.5 shrink-0 overflow-hidden flex items-center justify-center text-yellow-600 font-bold">
+                                                    {isIdentified ? name.charAt(0).toUpperCase() : '?'}
+                                                </div>
+                                                <div className="flex-1 min-w-[150px]">
+                                                    <p className="text-sm font-bold text-gray-800 leading-tight flex items-center gap-2">
+                                                        {name} {isIdentified && <User size={12} className="text-blue-500" />}
+                                                    </p>
+                                                    <p className="text-[11px] font-medium text-gray-400 line-clamp-1 mt-0.5">
+                                                        {phone} • Table {tx.tableNumber} • ฿{tx.totalAmount}
+                                                    </p>
+                                                </div>
+                                                <div className="flex flex-col items-end gap-1">
+                                                    <div className={`px-2 py-1 rounded-md text-[9px] font-bold border border-white shrink-0 shadow-sm ${statusBg} ${statusText}`}>{statusTextVal}</div>
+                                                    <span className="text-[10px] text-gray-400">{new Date(tx.timestamp).toLocaleTimeString()}</span>
+                                                </div>
                                             </div>
-                                            <div className="flex-1 min-w-[150px]">
-                                                <p className="text-sm font-bold text-gray-800 leading-tight">{c.name}</p>
-                                                <p className="text-[11px] font-medium text-gray-400 line-clamp-1 mt-0.5">Order: <span className="font-bold text-gray-600">{c.action}</span></p>
-                                            </div>
-                                            <div className={`px-2 py-1 rounded-md text-[9px] font-bold border border-white shrink-0 shadow-sm ${c.statusBg} ${c.statusText}`}>{c.status}</div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
+                                    {transactions.length === 0 && (
+                                        <div className="text-sm text-gray-400 text-center mt-4">No transactions recorded yet</div>
+                                    )}
                                 </div>
                             </div>
 
@@ -361,229 +396,331 @@ export function CDPScreen({
                     </div>
                 )}
 
-                {/* --- INSIGHT TAB --- */}
+                {/* --- CUSTOMER 360 TAB --- */}
                 {activeTab === 'insight' && (
                     <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4 md:gap-0">
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                                <Users className="text-yellow-500" /> Customer Insight
-                            </h1>
-                            {/* Search Box per requirements */}
-                            <div className="relative w-full md:w-80">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input
-                                    type="text"
-                                    placeholder="ค้นหาเบอร์โทร / ชื่อลูกค้า..."
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
-                                />
+                            <div>
+                                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+                                    <Users className="text-yellow-500" /> Customer 360
+                                </h1>
+                                <p className="text-gray-500 text-sm mt-1">Unified customer profiles and journey tracking.</p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <label className="flex items-center gap-2 cursor-pointer bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                                    <div className="relative">
+                                        <input type="checkbox" className="sr-only" checked={isDataMasked} onChange={(e) => setIsDataMasked(e.target.checked)} />
+                                        <div className={`block w-10 h-6 rounded-full transition-colors ${isDataMasked ? 'bg-blue-500' : 'bg-gray-300'}`}></div>
+                                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isDataMasked ? 'transform translate-x-4' : ''}`}></div>
+                                    </div>
+                                    <span className="text-sm font-bold text-gray-700 select-none">Data Masking (PDPA)</span>
+                                </label>
+                                <div className="relative w-full md:w-64">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                    <input
+                                        type="text"
+                                        placeholder="Search phone / name..."
+                                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm text-sm"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
-                            {/* Profile Card */}
-                            <div className="w-full lg:w-80 flex-shrink-0">
-                                <div className="bg-white rounded-2xl md:rounded-[2rem] p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                                    <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-pink-200 to-indigo-200 mb-4 p-1">
-                                        <img src="https://i.pravatar.cc/150?img=5" alt="Profile" className="w-full h-full object-cover rounded-full border-4 border-white" />
-                                    </div>
-                                    <h2 className="text-xl font-bold text-gray-900">Chayamon Naticharat</h2>
-                                    <p className="text-gray-500 font-medium mt-1 mb-4">086-360-5383</p>
-                                    <div className="px-4 py-1.5 bg-yellow-100 text-yellow-700 font-bold rounded-full text-sm mb-6 flex items-center gap-1 shadow-sm border border-yellow-200">
-                                        <TrendingUp size={14} /> VIP MEMBER
-                                    </div>
-                                    <div className="flex gap-3 mb-8">
-                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><MessageCircle size={18} /></button>
-                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><Phone size={18} /></button>
-                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><Mail size={18} /></button>
-                                    </div>
-
-                                    <div className="w-full text-left space-y-4">
-                                        <h3 className="font-bold text-gray-900 flex items-center gap-2 border-b border-gray-50 pb-2"><User size={16} /> Profile</h3>
-                                        <div className="grid grid-cols-[80px_1fr] gap-2 text-sm">
-                                            <span className="text-gray-400 font-medium">Birthday</span>
-                                            <span className="text-gray-900 font-medium">21 March 2000</span>
-
-                                            <span className="text-gray-400 font-medium">Age</span>
-                                            <span className="text-gray-900 font-medium">23 years</span>
-
-                                            <span className="text-gray-400 font-medium">Gender</span>
-                                            <span className="text-gray-900 font-medium">Female</span>
-
-                                            <span className="text-gray-400 font-medium">LINE</span>
-                                            <span className="text-gray-900 font-medium text-emerald-500">@Uy77SD9</span>
+                        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 min-h-[600px]">
+                            {/* Customer List Sidebar */}
+                            <div className="w-full lg:w-80 flex-shrink-0 bg-white rounded-2xl md:rounded-[2rem] p-4 shadow-sm border border-gray-100 flex flex-col h-[600px]">
+                                <h3 className="font-bold text-gray-900 mb-4 px-2">Customer Database</h3>
+                                <div className="flex-1 overflow-y-auto space-y-2 pr-2 no-scrollbar">
+                                    {customers.map((c, idx) => (
+                                        <div
+                                            key={c.id}
+                                            onClick={() => setSelectedCustomerId(c.id)}
+                                            className={`p-3 rounded-xl cursor-pointer transition-all border ${selectedCustomerId === c.id ? 'bg-yellow-50 border-yellow-400 shadow-sm ring-1 ring-yellow-400' : 'bg-white border-transparent hover:bg-gray-50'}`}
+                                        >
+                                            <div className="flex items-center justify-between mb-1">
+                                                <span className="font-bold text-gray-800 text-sm">{isDataMasked ? c.name.replace(/^(...).*/, '$1***') : c.name}</span>
+                                                <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">{c.tier}</span>
+                                            </div>
+                                            <p className="text-xs text-gray-500 font-medium">
+                                                {isDataMasked ? c.phone.replace(/(\d{3})-\d{3}-(\d{4})/, '$1-***-$2') : c.phone}
+                                                {c.lineUid && <span className="text-emerald-500 ml-1 font-bold">LINE✔</span>}
+                                            </p>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
 
-                            {/* Dashboard Data specific to Customer */}
-                            <div className="flex-1 space-y-6">
-                                <div className="flex gap-4 border-b border-gray-200">
-                                    <button className="px-6 py-3 font-bold text-gray-900 border-b-2 border-yellow-400 flex items-center gap-2"><Activity size={18} /> ข้อมูลการใช้จ่าย</button>
-                                </div>
-
-                                {/* Spending Overview */}
-                                <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-4 md:mb-6">Spending Overview</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x divide-gray-100">
-                                        <div className="text-center">
-                                            <p className="text-gray-500 font-medium mb-1">Total Spending</p>
-                                            <p className="text-4xl font-extrabold text-gray-900">23,042</p>
-                                            <p className="text-sm text-gray-400 mt-1">Baht</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-gray-500 font-medium mb-1">Visit Total</p>
-                                            <p className="text-4xl font-extrabold text-gray-900">5</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-gray-500 font-medium mb-1">Average spending</p>
-                                            <p className="text-4xl font-extrabold text-gray-900">4,608</p>
-                                            <p className="text-sm text-gray-400 mt-1">Baht</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Recent Purchases Mockup */}
-                                <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-4">ประวัติการสั่งซื้อล่าสุด</h3>
-                                    <div className="space-y-4">
-                                        {[1, 2, 3].map(i => (
-                                            <div key={i} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                                <div>
-                                                    <p className="font-bold text-gray-800">บิลเลขที่: INC2402{i}0012</p>
-                                                    <p className="text-sm text-gray-500">{new Date().toLocaleDateString()} 12:{i}0 PM</p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="font-bold text-xl text-gray-900">฿ {450 + (i * 120)}.00</p>
-                                                    <p className="text-sm text-green-500 font-medium">+ {Math.floor((450 + (i * 120)) / 20)} PTS</p>
+                            {/* Active Profile Details */}
+                            <div className="flex-1">
+                                {activeCustomer ? (
+                                    <div className="bg-white rounded-2xl md:rounded-[2rem] p-6 shadow-sm border border-gray-100 h-full">
+                                        {/* Profile Header Block */}
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 border-b border-gray-100">
+                                            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-yellow-200 to-orange-200 p-1 shrink-0">
+                                                <div className="w-full h-full bg-white rounded-full flex items-center justify-center font-black text-3xl text-yellow-600">
+                                                    {activeCustomer.name.charAt(0)}
                                                 </div>
                                             </div>
-                                        ))}
+                                            <div className="flex-1">
+                                                <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                                                    {isDataMasked ? activeCustomer.name.replace(/^(...).*/, '$1***') : activeCustomer.name}
+                                                </h2>
+                                                <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-gray-500 mb-3">
+                                                    <span className="flex items-center gap-1"><Phone size={14} /> {isDataMasked ? activeCustomer.phone.replace(/(\d{3})-\d{3}-(\d{4})/, '$1-***-$2') : activeCustomer.phone}</span>
+                                                    {activeCustomer.lineUid && (
+                                                        <span className="flex items-center gap-1 text-emerald-600"><MessageCircle size={14} /> Line: {isDataMasked ? 'UID-***-***' : activeCustomer.lineUid}</span>
+                                                    )}
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 font-bold rounded-full text-xs shadow-sm">
+                                                        {activeCustomer.tier} TIER
+                                                    </span>
+                                                    {activeCustomer.segments.map((seg, i) => (
+                                                        <span key={i} className="px-3 py-1 bg-gray-100 text-gray-600 font-bold rounded-full text-xs">
+                                                            {seg}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="flex sm:flex-col gap-2 shrink-0">
+                                                <button className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><MessageCircle size={16} /></button>
+                                                <button className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><Edit3 size={16} /></button>
+                                            </div>
+                                        </div>
+
+                                        {/* Behavior Insights */}
+                                        <div className="py-6 border-b border-gray-100">
+                                            <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2"><Activity size={18} /> Behavior & Analytics</h3>
+                                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-center">
+                                                    <p className="text-gray-500 text-xs font-bold mb-1 uppercase tracking-wider">Total Spent</p>
+                                                    <p className="text-2xl font-black text-gray-900">฿{activeCustomer.totalSpent.toLocaleString()}</p>
+                                                </div>
+                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-center">
+                                                    <p className="text-gray-500 text-xs font-bold mb-1 uppercase tracking-wider">Visits</p>
+                                                    <p className="text-2xl font-black text-gray-900">{activeCustomer.visitCount}</p>
+                                                </div>
+                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-center">
+                                                    <p className="text-gray-500 text-xs font-bold mb-1 uppercase tracking-wider">Avg. Ticket</p>
+                                                    <p className="text-2xl font-black text-gray-900">฿{activeCustomer.averageSpending.toLocaleString()}</p>
+                                                </div>
+                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-center">
+                                                    <p className="text-gray-500 text-xs font-bold mb-1 uppercase tracking-wider">Fav Table</p>
+                                                    <p className="text-2xl font-black text-gray-900">{activeCustomer.favoriteTable || 'N/A'}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Transaction History */}
+                                        <div className="pt-6">
+                                            <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2"><Utensils size={18} /> Recent Orders</h3>
+                                            <div className="space-y-3">
+                                                {customerTransactions.length > 0 ? customerTransactions.slice(0, 5).map(tx => (
+                                                    <div key={tx.id} className="flex justify-between items-center p-3 bg-white rounded-xl border border-gray-100 hover:border-yellow-300 transition-colors shadow-sm">
+                                                        <div>
+                                                            <p className="font-bold text-gray-800 text-sm">Table {tx.tableNumber}</p>
+                                                            <p className="text-[11px] text-gray-500 mt-0.5">{new Date(tx.timestamp).toLocaleString()}</p>
+                                                            <p className="text-xs text-gray-500 mt-1 line-clamp-1">{tx.items.join(', ')}</p>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="font-black text-gray-900">฿ {tx.totalAmount.toLocaleString()}</p>
+                                                            <p className="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-1.5 py-0.5 rounded inline-block mt-1">Completed</p>
+                                                        </div>
+                                                    </div>
+                                                )) : (
+                                                    <div className="p-6 text-center text-gray-400 bg-gray-50 rounded-xl text-sm font-medium border border-gray-100 border-dashed">No recent transaction history found.</div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="h-full flex items-center justify-center bg-white rounded-2xl border border-gray-100 border-dashed">
+                                        <div className="text-center text-gray-400">
+                                            <Users size={48} className="mx-auto mb-4 opacity-50" />
+                                            <p className="font-medium">Select a customer to view 360 profile</p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* --- ANALYSIS (BEST SELLERS) TAB --- */}
-                {activeTab === 'analysis' && (
+                {/* --- SEGMENTATION & LINE PROMO TAB --- */}
+                {activeTab === 'segmentation' && (
                     <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <TrendingUp className="text-yellow-500" /> วิเคราะห์สินค้าขายดี (Product Analysis)
-                            </h1>
-                            <div className="bg-white px-4 py-2 border border-gray-200 rounded-xl font-medium text-gray-600 text-sm shadow-sm">
-                                วิเคราะห์จากข้อมูลการสั่งของลูกค้า 30 วันย้อนหลัง
+                            <div>
+                                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
+                                    <Target className="text-yellow-500" /> Dynamic Segmentation & LINE
+                                </h1>
+                                <p className="text-gray-500 text-sm mt-1">Group customers and broadcast targeted LINE campaigns.</p>
+                            </div>
+                            <div className="bg-white px-4 py-2 border border-gray-200 rounded-full font-bold text-emerald-600 text-sm shadow-sm flex items-center gap-2">
+                                <MessageCircle size={16} /> LINE OA Connected
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                                <h3 className="text-lg font-bold text-gray-800 mb-6">Top 3 สินค้าขายดี (ตามจำนวนจาน)</h3>
-                                <div className="space-y-4">
-                                    {/* Mock Data */}
-                                    {topProduct && (
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex justify-center items-center font-black text-xl">1</div>
-                                            <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0">
-                                                <img src={topProduct.image} alt={topProduct.name} className="w-full h-full object-cover" />
-                                            </div>
+                            {/* Segments Overview */}
+                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col">
+                                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2"><PieChart size={20} /> Customer Segments</h3>
+                                <div className="space-y-4 flex-1">
+                                    {[
+                                        { name: 'VIP / Diamond', desc: 'ยอดใช้จ่ายรวม > 20,000 บาท', count: customers.filter(c => c.tier === 'DIAMOND').length, color: 'text-purple-600 bg-purple-50 border-purple-200' },
+                                        { name: 'Gold Members', desc: 'ยอดใช้จ่ายรวม > 5,000 บาท', count: customers.filter(c => c.tier === 'GOLD').length, color: 'text-yellow-600 bg-yellow-50 border-yellow-200' },
+                                        { name: 'Churn Risk', desc: 'ไม่ได้มาเกิน 30 วัน', count: customers.filter(c => c.segments.includes('Churn Risk')).length, color: 'text-red-600 bg-red-50 border-red-200' },
+                                        { name: 'New Customers', desc: 'เพิ่งมาใช้บริการครั้งแรก', count: customers.filter(c => c.visitCount === 1).length, color: 'text-blue-600 bg-blue-50 border-blue-200' },
+                                    ].map((seg, i) => (
+                                        <div key={i} className={`flex items-center gap-4 p-4 rounded-2xl border ${seg.color} transition-all cursor-pointer hover:shadow-md`}>
                                             <div className="flex-1">
-                                                <h4 className="font-bold text-gray-900 text-lg">{topProduct.name}</h4>
-                                                <span className="text-sm text-green-500 font-bold px-2 py-0.5 bg-green-50 rounded">เติบโต +15%</span>
+                                                <h4 className="font-bold text-gray-900 text-lg">{seg.name}</h4>
+                                                <p className="text-sm font-medium mt-0.5 opacity-80">{seg.desc}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-2xl font-black text-gray-900">342</p>
-                                                <p className="text-xs text-gray-500 uppercase font-bold">Qty Sold</p>
+                                                <p className="text-3xl font-black text-gray-900 leading-none">{seg.count}</p>
+                                                <p className="text-[10px] uppercase font-bold mt-1 opacity-70">Customers</p>
                                             </div>
                                         </div>
-                                    )}
-                                    {secondProduct && (
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-gray-100 text-gray-600 rounded-xl flex justify-center items-center font-black text-xl">2</div>
-                                            <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0">
-                                                <img src={secondProduct.image} alt={secondProduct.name} className="w-full h-full object-cover" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-bold text-gray-900 text-lg">{secondProduct.name}</h4>
-                                                <span className="text-sm text-gray-500 font-medium px-2 py-0.5 bg-gray-100 rounded">คงที่ -</span>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-2xl font-black text-gray-900">289</p>
-                                                <p className="text-xs text-gray-500 uppercase font-bold">Qty Sold</p>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {thirdProduct && (
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex justify-center items-center font-black text-xl">3</div>
-                                            <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0">
-                                                <img src={thirdProduct.image} alt={thirdProduct.name} className="w-full h-full object-cover" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h4 className="font-bold text-gray-900 text-lg">{thirdProduct.name}</h4>
-                                                <span className="text-sm text-green-500 font-bold px-2 py-0.5 bg-green-50 rounded">เติบโต +8%</span>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-2xl font-black text-gray-900">210</p>
-                                                <p className="text-xs text-gray-500 uppercase font-bold">Qty Sold</p>
-                                            </div>
-                                        </div>
-                                    )}
+                                    ))}
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                                <h3 className="text-lg font-bold text-gray-800 mb-6">รายการอาหารจัดอันดับทั้งหมด</h3>
+                            {/* LINE Promo Broadcast Mockup */}
+                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 blur-3xl rounded-full"></div>
+                                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2 relative z-10"><Send size={20} className="text-emerald-500" /> Broadcast Campaign</h3>
+
+                                <div className="space-y-4 flex-1 relative z-10">
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2">Target Segment</label>
+                                        <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none font-medium">
+                                            <option>Churn Risk ({customers.filter(c => c.segments.includes('Churn Risk')).length} users)</option>
+                                            <option>VIP / Diamond ({customers.filter(c => c.tier === 'DIAMOND').length} users)</option>
+                                            <option>All Customers ({customers.length} users)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2">Message Template (Flex Message)</label>
+                                        <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl border-dashed">
+                                            <div className="max-w-[200px] border border-gray-200 rounded-t-xl rounded-b-sm bg-white overflow-hidden shadow-sm">
+                                                <div className="h-24 bg-gray-200 relative">
+                                                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" alt="promo" />
+                                                    <div className="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">20% OFF</div>
+                                                </div>
+                                                <div className="p-3">
+                                                    <p className="font-bold text-xs text-gray-800 leading-tight">คิดถึงคุณ! กลับมาทานอาหารฟินๆ 🥢</p>
+                                                    <p className="text-[10px] text-gray-500 mt-1">รับส่วนลดพิเศษ 20% สำหรับเมนูแซลมอน เฉพาะคุณเท่านั้น</p>
+                                                    <button className="w-full mt-2 py-1.5 bg-blue-900 text-white text-[10px] font-bold rounded">จองโต๊ะเลย</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => alert('Mockup: Broadcast sent to LINE Messaging API!')}
+                                    className="w-full py-4 mt-6 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition shadow-lg shadow-emerald-500/30 flex justify-center items-center gap-2 relative z-10"
+                                >
+                                    <Send size={18} /> Send Broadcast Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- PRIVACY & CONSENT TAB --- */}
+                {activeTab === 'privacy' && (
+                    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans min-h-[800px]">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
+                            <div>
+                                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
+                                    <Shield className="text-blue-500" /> Privacy & Consent (PDPA)
+                                </h1>
+                                <p className="text-gray-500 text-sm mt-1">Manage data privacy settings and customer consent logs.</p>
+                            </div>
+                            <div className="bg-emerald-50 px-4 py-2 border border-emerald-200 rounded-full font-bold text-emerald-700 text-sm shadow-sm flex items-center gap-2">
+                                <CheckCircle size={16} /> Fully Compliant
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            {/* Summary Cards */}
+                            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center shrink-0"><Shield size={24} /></div>
+                                    <div>
+                                        <p className="text-sm font-bold text-gray-500">Total Opt-in</p>
+                                        <p className="text-2xl font-black text-gray-900">{customers.filter(c => c.marketingConsent).length} Users</p>
+                                    </div>
+                                </div>
+                                <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-yellow-50 text-yellow-500 rounded-full flex items-center justify-center shrink-0"><AlertTriangle size={24} /></div>
+                                    <div>
+                                        <p className="text-sm font-bold text-gray-500">Pending Consent</p>
+                                        <p className="text-2xl font-black text-gray-900">{customers.filter(c => !c.marketingConsent).length} Users</p>
+                                    </div>
+                                </div>
+                                <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center shrink-0"><FileText size={24} /></div>
+                                    <div>
+                                        <p className="text-sm font-bold text-gray-500">Policy Version</p>
+                                        <p className="text-2xl font-black text-gray-900">v2.1.0</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Consent Log */}
+                            <div className="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><List size={18} /> Recent Consent Logs</h3>
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left border-collapse">
                                         <thead>
-                                            <tr className="border-b border-gray-200 text-sm text-gray-500">
-                                                <th className="py-3 font-medium">ชื่อรายการ</th>
-                                                <th className="py-3 font-medium text-right">จำนวน (จาน)</th>
-                                                <th className="py-3 font-medium text-right">ยอดขาย (บาท)</th>
+                                            <tr className="border-b border-gray-100 text-sm font-bold text-gray-500">
+                                                <th className="py-3 px-2">Customer</th>
+                                                <th className="py-3 px-2">Channel</th>
+                                                <th className="py-3 px-2">Status</th>
+                                                <th className="py-3 px-2 text-right">Date</th>
                                             </tr>
                                         </thead>
                                         <tbody className="text-sm">
-                                            {topProduct && (
-                                                <tr className="border-b border-gray-50">
-                                                    <td className="py-3 font-bold text-gray-800">{topProduct.name}</td>
-                                                    <td className="py-3 text-right">342</td>
-                                                    <td className="py-3 text-right text-gray-500">฿{(342 * topProduct.price).toLocaleString()}</td>
+                                            {customers.slice(0, 5).map((c, i) => (
+                                                <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                                                    <td className="py-3 px-2 font-bold text-gray-800 flex items-center gap-2">
+                                                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] shrink-0 font-medium">
+                                                            {c.name.charAt(0)}
+                                                        </div>
+                                                        {c.name.slice(0, c.name.length - 3) + '***'}
+                                                    </td>
+                                                    <td className="py-3 px-2 text-gray-600 font-medium">
+                                                        {c.lineUid ? 'LINE Login' : 'POS Register'}
+                                                    </td>
+                                                    <td className="py-3 px-2">
+                                                        {c.marketingConsent ?
+                                                            <span className="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100">Accepted</span> :
+                                                            <span className="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded border border-red-100">Declined</span>
+                                                        }
+                                                    </td>
+                                                    <td className="py-3 px-2 text-right text-gray-500">
+                                                        {new Date(Date.now() - i * 86400000).toLocaleDateString()}
+                                                    </td>
                                                 </tr>
-                                            )}
-                                            {secondProduct && (
-                                                <tr className="border-b border-gray-50">
-                                                    <td className="py-3 font-bold text-gray-800">{secondProduct.name}</td>
-                                                    <td className="py-3 text-right">289</td>
-                                                    <td className="py-3 text-right text-gray-500">฿{(289 * secondProduct.price).toLocaleString()}</td>
-                                                </tr>
-                                            )}
-                                            {thirdProduct && (
-                                                <tr className="border-b border-gray-50">
-                                                    <td className="py-3 font-bold text-gray-800">{thirdProduct.name}</td>
-                                                    <td className="py-3 text-right">210</td>
-                                                    <td className="py-3 text-right text-gray-500">฿{(210 * thirdProduct.price).toLocaleString()}</td>
-                                                </tr>
-                                            )}
-                                            {fourthProduct && (
-                                                <tr className="border-b border-gray-50">
-                                                    <td className="py-3 font-medium text-gray-600">{fourthProduct.name}</td>
-                                                    <td className="py-3 text-right">156</td>
-                                                    <td className="py-3 text-right text-gray-500">฿{(156 * fourthProduct.price).toLocaleString()}</td>
-                                                </tr>
-                                            )}
-                                            {fifthProduct && (
-                                                <tr>
-                                                    <td className="py-3 font-medium text-gray-600">{fifthProduct.name}</td>
-                                                    <td className="py-3 text-right">145</td>
-                                                    <td className="py-3 text-right text-gray-500">฿{(145 * fifthProduct.price).toLocaleString()}</td>
-                                                </tr>
-                                            )}
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+
+                            {/* Policy Management Link */}
+                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between relative overflow-hidden group hover:border-blue-200 transition-colors">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 blur-3xl rounded-full"></div>
+                                <div className="relative z-10">
+                                    <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2"><Settings size={18} /> Policy Settings</h3>
+                                    <p className="text-sm text-gray-500 mb-6 leading-relaxed">Update your terms of service and privacy policies to sync across POS and online channels.</p>
+                                </div>
+                                <button className="w-full py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-gray-700 hover:border-blue-500 hover:text-blue-600 transition flex items-center justify-center gap-2 shadow-sm relative z-10 group-hover:shadow hover:bg-blue-50">
+                                    <ExternalLink size={16} /> Edit Data Policy
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, List, Star, Grid, Coffee, Edit3, UserPlus, CreditCard, Banknote, X, CheckCircle, Tag, ShoppingBag, Trash2 } from 'lucide-react';
 import { Product, CartItem, Table } from '../types';
+import { useCDP } from '../contexts/CDPDataContext';
 
 export function POSScreen({
   products,
@@ -24,6 +25,9 @@ export function POSScreen({
   const [paymentMethod, setPaymentMethod] = useState<'none' | 'cash' | 'qr'>('none');
   const [cashAmount, setCashAmount] = useState<string>('');
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+
+  // CDP Integration
+  const { addTransaction } = useCDP();
 
   // Table Selection State
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
@@ -98,6 +102,16 @@ export function POSScreen({
     */
     // [Mockup Action]
     setPaymentSuccess(true);
+
+    // Sync to CDP Context
+    addTransaction({
+      source: 'POS',
+      tableNumber: selectedTable ? selectedTable.name : 'Walk-in',
+      phoneProvided: member ? member.phone : undefined,
+      items: cartItems.map(item => item.product.name),
+      totalAmount: totalAmount
+    });
+
     // จำลอง Console Log การส่ง LINE
     if (member) {
       console.log(`[LINE API MOCKUP] ส่ง Flex Message ไปที่เบอร์ ${member.phone}`);
