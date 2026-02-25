@@ -55,7 +55,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 font-sans relative">
       {/* Mode Switcher */}
-      <div className="fixed top-4 right-4 z-[100] flex bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:-translate-x-0 lg:left-auto lg:top-4 lg:right-4 lg:bottom-auto z-[100] flex bg-white rounded-xl lg:rounded-lg shadow-2xl lg:shadow-lg overflow-hidden border border-gray-200 whitespace-nowrap">
         <button
           onClick={() => setAppMode('customer')}
           className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${appMode === 'customer' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}

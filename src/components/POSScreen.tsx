@@ -109,55 +109,55 @@ export function POSScreen({
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans text-gray-800 w-full overflow-hidden relative">
+    <div className="flex flex-col lg:flex-row h-[100dvh] bg-gray-50 font-sans text-gray-800 w-full overflow-hidden relative">
       {/* --- Left Main Area --- */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden border-r border-gray-200">
+      <div className="flex-1 flex flex-col h-[60dvh] lg:h-full overflow-hidden lg:border-r border-gray-200">
         {/* Top Bar */}
-        <div className="flex items-center gap-2 p-4 bg-white border-b border-gray-200 shrink-0">
-          <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"><List size={20} /></button>
-          <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"><Search size={20} /></button>
+        <div className="flex items-center gap-2 p-4 bg-white border-b border-gray-200 shrink-0 overflow-x-auto no-scrollbar">
+          <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors shrink-0"><List size={20} /></button>
+          <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors shrink-0"><Search size={20} /></button>
 
-          <div className="flex items-center bg-gray-100 rounded-lg ml-2 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-200 text-gray-700 font-medium">
+          <div className="flex items-center bg-gray-100 rounded-lg ml-0 sm:ml-2 overflow-hidden shrink-0">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-3 bg-gray-200 text-gray-700 font-medium whitespace-nowrap text-sm sm:text-base">
               <Coffee size={18} />
-              <span>ทานที่ร้าน</span>
+              <span className="hidden sm:inline">ทานที่ร้าน</span>
             </div>
-            <div className="px-4 py-3 text-gray-500 text-sm">
+            <div className="px-3 sm:px-4 py-3 text-gray-500 text-xs sm:text-sm whitespace-nowrap">
               บิล : INC2302221111A000
             </div>
           </div>
 
-          <div className="flex-1"></div>
+          <div className="flex-1 min-w-[1rem]"></div>
 
           <button
             onClick={() => setIsTableModalOpen(true)}
-            className={`px-6 py-3 border rounded-lg font-medium transition-colors flex items-center gap-2 ${selectedTable ? 'bg-orange-50 text-orange-700 border-orange-200' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
+            className={`px-4 sm:px-6 py-3 border rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0 ${selectedTable ? 'bg-orange-50 text-orange-700 border-orange-200' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
           >
-            {selectedTable ? `โต๊ะ: ${selectedTable.name}` : 'เลือกโต๊ะ'}
+            {selectedTable ? <span className="whitespace-nowrap">โต๊ะ: {selectedTable.name}</span> : <span className="whitespace-nowrap">เลือกโต๊ะ</span>}
           </button>
           <button
             onClick={() => setIsMemberModalOpen(true)}
-            className={`px-6 py-3 border rounded-lg font-medium transition-colors flex items-center gap-2 ${member ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
+            className={`px-4 sm:px-6 py-3 border rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0 ${member ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
           >
             <UserPlus size={18} />
-            {member ? member.name : 'เพิ่มสมาชิก'}
+            <span className="hidden sm:inline whitespace-nowrap">{member ? member.name : 'เพิ่มสมาชิก'}</span>
           </button>
         </div>
 
-        <div className="flex gap-4 p-4 bg-white border-b border-gray-200 shrink-0">
+        <div className="flex gap-4 p-4 bg-white border-b border-gray-200 shrink-0 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setCategory('all')}
-            className={`flex flex-col items-center justify-center w-24 h-24 rounded-xl shadow-sm transition-transform hover:scale-105 ${category === 'all' ? 'bg-yellow-400' : 'bg-gray-50 hover:bg-gray-100 border border-gray-100'}`}
+            className={`flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-xl shadow-sm transition-transform hover:scale-105 shrink-0 ${category === 'all' ? 'bg-yellow-400' : 'bg-gray-50 hover:bg-gray-100 border border-gray-100'}`}
           >
-            <Grid size={28} className="mb-2" />
-            <span className="font-bold text-sm">ทั้งหมด</span>
+            <Grid size={24} className="mb-1 sm:mb-2 sm:w-[28px] sm:h-[28px]" />
+            <span className="font-bold text-xs sm:text-sm">ทั้งหมด</span>
           </button>
           <button
             onClick={() => setCategory('bestseller')}
-            className={`flex flex-col items-center justify-center w-24 h-24 rounded-xl shadow-sm transition-transform hover:scale-105 ${category === 'bestseller' ? 'bg-yellow-400' : 'bg-gray-50 hover:bg-gray-100 border border-gray-100'}`}
+            className={`flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-xl shadow-sm transition-transform hover:scale-105 shrink-0 ${category === 'bestseller' ? 'bg-yellow-400' : 'bg-gray-50 hover:bg-gray-100 border border-gray-100'}`}
           >
-            <Star size={28} className={`mb-2 ${category === 'bestseller' ? 'text-gray-900' : 'text-gray-700'}`} />
-            <span className={`font-medium text-sm ${category === 'bestseller' ? 'text-gray-900' : 'text-gray-700'}`}>สินค้าขายดี</span>
+            <Star size={24} className={`mb-1 sm:mb-2 sm:w-[28px] sm:h-[28px] ${category === 'bestseller' ? 'text-gray-900' : 'text-gray-700'}`} />
+            <span className={`font-medium text-xs sm:text-sm ${category === 'bestseller' ? 'text-gray-900' : 'text-gray-700'}`}>สินค้าขายดี</span>
           </button>
         </div>
 
@@ -194,8 +194,8 @@ export function POSScreen({
       </div>
 
       {/* --- Right Sidebar - Order --- */}
-      <div className="w-96 bg-white flex flex-col h-full shadow-[-4px_0_15px_rgba(0,0,0,0.03)] z-10 shrink-0">
-        <div className="p-4 border-b border-gray-200 flex justify-between items-center shrink-0">
+      <div className="w-full lg:w-[400px] xl:w-[450px] bg-white flex flex-col h-[40dvh] lg:h-full lg:shadow-[-4px_0_15px_rgba(0,0,0,0.03)] z-10 shrink-0 border-t lg:border-t-0 border-gray-200">
+        <div className="p-3 sm:p-4 border-b border-gray-200 flex justify-between items-center shrink-0">
           <h2 className="font-bold text-lg">ออเดอร์</h2>
           <span className="text-sm font-medium text-gray-600">ทั้งหมด {cartItems.reduce((acc, i) => acc + i.qty, 0)} รายการ</span>
         </div>
@@ -260,21 +260,21 @@ export function POSScreen({
         )}
 
         {/* Summary */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50 shrink-0">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">ยอดรวมสุทธิ</span>
-            <span className="font-bold text-2xl text-gray-900">฿ {totalAmount.toFixed(2)}</span>
+        <div className="p-3 sm:p-4 border-t border-gray-200 bg-gray-50 shrink-0">
+          <div className="flex justify-between items-center mb-1 sm:mb-2">
+            <span className="text-gray-600 text-sm sm:text-base">ยอดรวมสุทธิ</span>
+            <span className="font-bold text-xl sm:text-2xl text-gray-900">฿ {totalAmount.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Bottom Actions */}
         <div className="flex border-t border-gray-200 shrink-0">
-          <button className="flex-1 py-5 bg-gray-200 text-gray-700 font-bold text-lg hover:bg-gray-300 transition-colors">
+          <button className="flex-1 py-4 sm:py-5 bg-gray-200 text-gray-700 font-bold sm:text-lg hover:bg-gray-300 transition-colors">
             พักบิล
           </button>
           <button
             onClick={handleCheckout}
-            className={`flex-1 py-5 font-bold text-lg transition-colors ${cartItems.length > 0 ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-500' : 'bg-yellow-200 text-gray-500 cursor-not-allowed'}`}
+            className={`flex-1 py-4 sm:py-5 font-bold sm:text-lg transition-colors ${cartItems.length > 0 ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-500' : 'bg-yellow-200 text-gray-500 cursor-not-allowed'}`}
           >
             ชำระเงิน
           </button>
@@ -288,14 +288,14 @@ export function POSScreen({
 
       {/* Table Selection Modal */}
       {isTableModalOpen && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-[2rem] p-8 w-full max-w-4xl shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
-            <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-extrabold text-gray-900">Choose Tables</h3>
+        <div className="absolute inset-0 z-[150] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-[2rem] p-6 sm:p-8 w-full max-w-4xl shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <div className="flex justify-between items-center mb-6 sm:mb-8">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900">Choose Tables</h3>
               <button onClick={() => setIsTableModalOpen(false)} className="text-gray-400 hover:bg-gray-100 p-2 rounded-full transition-colors"><X size={24} /></button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-12 gap-x-6 items-end justify-items-center">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-8 sm:gap-y-12 gap-x-4 sm:gap-x-6 items-end justify-items-center">
               {tables.map(table => {
                 const isFree = table.status === 'free';
                 const isReserved = table.status === 'reserved';
@@ -322,9 +322,9 @@ export function POSScreen({
                       {Array(table.seats / 2).fill(0).map((_, i) => <div key={`t-${i}`} className="w-10 h-3 bg-gray-300 rounded-full"></div>)}
                     </div>
                     {/* Table Body */}
-                    <div className={`border-[6px] rounded-[2.5rem] px-6 py-5 min-w-[160px] text-center bg-white ${borderClass} shadow-sm`}>
-                      <div className="font-extrabold text-lg text-gray-900 mb-1">{table.name}</div>
-                      <div className="text-sm font-medium text-gray-600 line-clamp-1 break-all">{table.detail}</div>
+                    <div className={`border-[4px] sm:border-[6px] rounded-3xl sm:rounded-[2.5rem] px-4 py-3 sm:px-6 sm:py-5 min-w-[120px] sm:min-w-[160px] text-center bg-white ${borderClass} shadow-sm`}>
+                      <div className="font-extrabold text-base sm:text-lg text-gray-900 mb-1">{table.name}</div>
+                      <div className="text-xs sm:text-sm font-medium text-gray-600 line-clamp-1 break-all">{table.detail}</div>
                     </div>
                     {/* Bottom Chairs */}
                     <div className="flex gap-3">

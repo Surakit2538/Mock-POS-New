@@ -82,14 +82,14 @@ export function CDPScreen({
     };
 
     return (
-        <div className="flex h-[100dvh] w-full bg-gray-50 overflow-hidden font-sans">
+        <div className="flex flex-col md:flex-row h-[100dvh] w-full bg-gray-50 overflow-hidden font-sans">
 
             {/* Sidebar Navigation */}
-            <div className="w-20 bg-white border-r border-gray-200 flex flex-col items-center py-6 gap-8 z-10 shrink-0">
-                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">
+            <div className="w-full md:w-20 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex flex-row md:flex-col items-center py-3 md:py-6 gap-4 md:gap-8 z-10 shrink-0 overflow-x-auto px-4 md:px-0">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg shadow-blue-500/30 shrink-0">
                     C
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-row md:flex-col gap-2 md:gap-4 shrink-0">
                     <button
                         title="Analytics Dashboard"
                         onClick={() => setActiveTab('dashboard')}
@@ -126,9 +126,9 @@ export function CDPScreen({
 
                 {/* --- DASHBOARD TAB --- */}
                 {activeTab === 'dashboard' && (
-                    <div className="p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
-                        <div className="flex justify-between items-center mb-6">
-                            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
                                 <BarChart className="text-blue-600" /> Analytics Dashboard
                             </h1>
                             <select className="px-4 py-2 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -140,25 +140,25 @@ export function CDPScreen({
                         </div>
 
                         {/* KPI Cards */}
-                        <div className="grid grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                             {[
                                 { title: 'รายได้รวม (Revenue)', value: '฿ 45,200', trend: '+12%', color: 'text-green-500' },
                                 { title: 'จำนวนออเดอร์', value: '142', trend: '+5%', color: 'text-green-500' },
                                 { title: 'ยอดชำระเฉลี่ย/บิล', value: '฿ 318', trend: '-2%', color: 'text-red-500' },
                                 { title: 'ลูกค้าใหม่ที่สมัครสมาชิค', value: '24', trend: '+18%', color: 'text-green-500' },
                             ].map((kpi, idx) => (
-                                <div key={idx} className="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
-                                    <span className="text-gray-500 text-sm font-medium mb-2">{kpi.title}</span>
-                                    <span className="text-3xl font-black text-gray-900 mb-2">{kpi.value}</span>
-                                    <span className={`text-sm font-bold ${kpi.color}`}>{kpi.trend} จากช่วงก่อนหน้า</span>
+                                <div key={idx} className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
+                                    <span className="text-gray-500 text-xs sm:text-sm font-medium mb-1 sm:mb-2 line-clamp-1">{kpi.title}</span>
+                                    <span className="text-2xl sm:text-3xl font-black text-gray-900 mb-1 sm:mb-2">{kpi.value}</span>
+                                    <span className={`text-xs sm:text-sm font-bold ${kpi.color}`}>{kpi.trend} <span className="hidden xl:inline">จากช่วงก่อนหน้า</span></span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Charts Area */}
-                        <div className="flex gap-6 mt-6">
+                        <div className="flex flex-col lg:flex-row gap-6 mt-6">
                             {/* Main Line Chart Mockup */}
-                            <div className="flex-1 bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 min-h-[400px] flex flex-col">
+                            <div className="flex-1 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 min-h-[300px] sm:min-h-[400px] flex flex-col">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="font-bold text-lg text-gray-800">แนวโน้มยอดขาย (Sales Trend)</h3>
                                 </div>
@@ -193,7 +193,7 @@ export function CDPScreen({
                             </div>
 
                             {/* Summary Donut Chart Mockup */}
-                            <div className="w-96 bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
+                            <div className="w-full lg:w-80 xl:w-96 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
                                 <h3 className="font-bold text-lg text-gray-800 mb-6">สัดส่วนยอดขายตามหมวดหมู่</h3>
                                 <div className="flex-1 flex flex-col items-center justify-center">
                                     <div className="w-48 h-48 rounded-full border-[16px] border-gray-100 relative mb-6">
@@ -224,13 +224,13 @@ export function CDPScreen({
 
                 {/* --- INSIGHT TAB --- */}
                 {activeTab === 'insight' && (
-                    <div className="p-8 max-w-7xl mx-auto animate-in fade-in duration-300">
-                        <div className="flex justify-between items-center mb-8">
-                            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <div className="p-4 sm:p-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4 md:gap-0">
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
                                 <Users className="text-blue-600" /> Customer Insight
                             </h1>
                             {/* Search Box per requirements */}
-                            <div className="relative w-80">
+                            <div className="relative w-full md:w-80">
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     type="text"
@@ -240,10 +240,10 @@ export function CDPScreen({
                             </div>
                         </div>
 
-                        <div className="flex flex-col lg:flex-row gap-8">
+                        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
                             {/* Profile Card */}
                             <div className="w-full lg:w-80 flex-shrink-0">
-                                <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                                <div className="bg-white rounded-2xl md:rounded-[2rem] p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col items-center text-center">
                                     <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-pink-200 to-indigo-200 mb-4 p-1">
                                         <img src="https://i.pravatar.cc/150?img=5" alt="Profile" className="w-full h-full object-cover rounded-full border-4 border-white" />
                                     </div>
@@ -284,9 +284,9 @@ export function CDPScreen({
                                 </div>
 
                                 {/* Spending Overview */}
-                                <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-6">Spending Overview</h3>
-                                    <div className="grid grid-cols-3 gap-6 divide-x divide-gray-100">
+                                <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100">
+                                    <h3 className="text-lg font-bold text-gray-900 mb-4 md:mb-6">Spending Overview</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x divide-gray-100">
                                         <div className="text-center">
                                             <p className="text-gray-500 font-medium mb-1">Total Spending</p>
                                             <p className="text-4xl font-extrabold text-gray-900">23,042</p>
@@ -305,7 +305,7 @@ export function CDPScreen({
                                 </div>
 
                                 {/* Recent Purchases Mockup */}
-                                <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                                <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100">
                                     <h3 className="text-lg font-bold text-gray-900 mb-4">ประวัติการสั่งซื้อล่าสุด</h3>
                                     <div className="space-y-4">
                                         {[1, 2, 3].map(i => (
@@ -329,9 +329,9 @@ export function CDPScreen({
 
                 {/* --- ANALYSIS (BEST SELLERS) TAB --- */}
                 {activeTab === 'analysis' && (
-                    <div className="p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
-                        <div className="flex justify-between items-center mb-6">
-                            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
                                 <TrendingUp className="text-blue-600" /> วิเคราะห์สินค้าขายดี (Product Analysis)
                             </h1>
                             <div className="bg-white px-4 py-2 border border-gray-200 rounded-xl font-medium text-gray-600 text-sm shadow-sm">
@@ -452,12 +452,12 @@ export function CDPScreen({
 
                 {/* --- SETTING TAB --- */}
                 {activeTab === 'setting' && (
-                    <div className="p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
-                        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3 mb-8">
+                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6 sm:mb-8">
                             <Settings className="text-blue-600" /> ระบบจัดตั้งค่าร้านค้า (Settings)
                         </h1>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
                             {/* Menu Management */}
                             <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                                 <div className="flex justify-between items-center mb-6">
@@ -488,14 +488,14 @@ export function CDPScreen({
                             </div>
 
                             {/* Table Management */}
-                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                                <div className="flex justify-between items-center mb-6">
+                            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
+                                <div className="flex justify-between items-center mb-4 sm:mb-6">
                                     <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2"><Coffee size={20} /> จัดการโต๊ะนั่ง</h3>
                                     <button onClick={handleAddTable} className="flex items-center gap-1 text-sm bg-green-50 text-green-600 font-bold px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">
                                         <Plus size={16} /> เพิ่มโต๊ะ
                                     </button>
                                 </div>
-                                <div className="grid grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-2">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[500px] overflow-y-auto pr-2">
                                     {tables.map(table => (
                                         <div key={table.id} className={`border ${table.status === 'free' ? 'border-emerald-200' : table.status === 'reserved' ? 'border-amber-200' : 'border-orange-200'} rounded-xl p-4 flex flex-col items-center justify-center relative group hover:shadow-md transition-all`}>
                                             <span className="font-black text-xl text-gray-800">{table.name}</span>
