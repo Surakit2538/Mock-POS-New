@@ -26,8 +26,9 @@ export function HomeScreen({ products, onNavigate }: { products: Product[], onNa
 
         {/* Title */}
         <div className="px-6 mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
-            Best meal<br />in the world
+          <h1 className="text-4xl font-extrabold leading-tight">
+            <span className="text-yellow-500">Best meal</span><br />
+            <span className="text-gray-900">in the world</span>
           </h1>
         </div>
 
@@ -56,7 +57,10 @@ export function HomeScreen({ products, onNavigate }: { products: Product[], onNa
 
         {/* Menu Grid */}
         <div className="px-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Salads menu</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-2 h-6 bg-yellow-400 rounded-full"></div>
+            <h2 className="text-xl font-bold text-gray-900">Salads menu</h2>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             {filteredProducts.map((product, i) => (
               <div

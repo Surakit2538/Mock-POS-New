@@ -40,7 +40,7 @@ export function DetailScreen({
           <div className="w-2 h-2 rounded-full bg-gray-600"></div>
         </div>
 
-        <h1 className="text-4xl font-bold leading-tight mb-4">{product.name}</h1>
+        <h1 className="text-4xl font-bold leading-tight mb-4 text-yellow-400">{product.name}</h1>
 
         <div className="flex items-end gap-3 mb-6">
           <span className="text-2xl font-bold">${product.price.toFixed(2)}</span>
