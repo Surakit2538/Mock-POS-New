@@ -1,20 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Mock POS
 
-# Run and deploy your AI Studio app
+A modern, responsive Point of Sale (POS) and Customer Data Platform (CDP) application built with React, Vite, and Tailwind CSS.
 
-This contains everything you need to run your app locally.
+## 🚀 Features
+- **Responsive Design**: Seamlessly adapts to Mobile, Tablet, and Desktop screens.
+- **POS System**: Quick product selection, cart management, mock payment flow, and table status operations.
+- **Table Management**: Visual overview of free, reserved, and checked-in tables with color indicators.
+- **CDP Dashboard (CRM)**: Analytics dashboard, customer insights, and best-seller product analysis.
+- **Settings**: Manage menu items and tables directly from the application.
 
-View your app in AI Studio: https://ai.studio/apps/3f7bbc55-eb84-468a-b1ce-97d4b110a120
+## 🔗 Live Demo
+Check out the live deployment here: **[Mock-POS Live App](https://surakit2538.github.io/Mock-POS/)**
 
-## Run Locally
+## 🛠️ Development Setup
 
-**Prerequisites:**  Node.js
+To run this project locally on your machine:
 
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Surakit2538/Mock-POS.git
+   cd Mock-POS
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+## 🏗️ Tech Stack
+- Frontend: React (Vite)
+- Styling: Tailwind CSS
+- Icons: Lucide React
