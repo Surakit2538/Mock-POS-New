@@ -10,7 +10,7 @@ A modern, responsive Point of Sale (POS) and Customer Data Platform (CDP) applic
 - **Settings**: Manage menu items and tables directly from the application.
 
 ## 🔗 Live Demo
-Check out the live deployment here: **[Mock-POS Live App](https://surakit2538.github.io/Mock-POS/)**
+Check out the live deployment here: **[Mock-POS Live App](https://surakit2538.github.io/Mock-POS-New/)**
 
 ## 🛠️ Development Setup
 
@@ -18,8 +18,8 @@ To run this project locally on your machine:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Surakit2538/Mock-POS.git
-   cd Mock-POS
+   git clone https://github.com/Surakit2538/Mock-POS-New.git
+   cd Mock-POS-New
    ```
 
 2. **Install dependencies:**
