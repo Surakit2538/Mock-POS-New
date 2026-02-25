@@ -36,12 +36,12 @@ export default function App() {
     setCurrentScreen(screen);
   };
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity: number) => {
     const existing = cart.find(item => item.product.id === product.id);
     if (existing) {
-      setCart(cart.map(item => item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
+      setCart(cart.map(item => item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item));
     } else {
-      setCart([...cart, { id: `cart-${Date.now()}`, product, quantity: 1, size: 'M', orderedBy: 'customer' }]);
+      setCart([...cart, { id: `cart-${Date.now()}`, product, quantity: quantity, size: 'M', orderedBy: 'customer' }]);
     }
   };
 
@@ -115,8 +115,8 @@ export default function App() {
       {appMode === 'customer' ? (
         <div className="flex items-center justify-center min-h-screen p-0 sm:p-8">
           <div className="w-full h-[100dvh] sm:h-[850px] sm:max-h-[90vh] sm:max-w-[400px] bg-white sm:rounded-[40px] shadow-2xl overflow-hidden relative">
-            {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} customerTable={customerTableInfo} />}
-            {currentScreen === 'detail' && selectedProduct && <DetailScreen product={selectedProduct} onNavigate={navigateTo} onAddToCart={() => addToCart(selectedProduct)} />}
+            {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} customerTable={customerTableInfo} cartItemCount={cart.reduce((acc, item) => acc + item.quantity, 0)} />}
+            {currentScreen === 'detail' && selectedProduct && <DetailScreen product={selectedProduct} onNavigate={navigateTo} onAddToCart={(qty) => addToCart(selectedProduct, qty)} />}
             {currentScreen === 'cart' && <CartScreen cart={cart} onNavigate={navigateTo} onUpdateQuantity={updateQuantity} onCheckout={handleCustomerCheckout} />}
           </div>
         </div>
