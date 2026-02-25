@@ -126,95 +126,235 @@ export function CDPScreen({
 
                 {/* --- DASHBOARD TAB --- */}
                 {activeTab === 'dashboard' && (
-                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <BarChart className="text-blue-600" /> Analytics Dashboard
-                            </h1>
-                            <select className="px-4 py-2 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>วันนี้</option>
-                                <option>สัปดาห์นี้</option>
-                                <option>เดือนนี้</option>
-                                <option>ปีนี้</option>
-                            </select>
-                        </div>
+                    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
 
-                        {/* KPI Cards */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                            {[
-                                { title: 'รายได้รวม (Revenue)', value: '฿ 45,200', trend: '+12%', color: 'text-green-500' },
-                                { title: 'จำนวนออเดอร์', value: '142', trend: '+5%', color: 'text-green-500' },
-                                { title: 'ยอดชำระเฉลี่ย/บิล', value: '฿ 318', trend: '-2%', color: 'text-red-500' },
-                                { title: 'ลูกค้าใหม่ที่สมัครสมาชิค', value: '24', trend: '+18%', color: 'text-green-500' },
-                            ].map((kpi, idx) => (
-                                <div key={idx} className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
-                                    <span className="text-gray-500 text-xs sm:text-sm font-medium mb-1 sm:mb-2 line-clamp-1">{kpi.title}</span>
-                                    <span className="text-2xl sm:text-3xl font-black text-gray-900 mb-1 sm:mb-2">{kpi.value}</span>
-                                    <span className={`text-xs sm:text-sm font-bold ${kpi.color}`}>{kpi.trend} <span className="hidden xl:inline">จากช่วงก่อนหน้า</span></span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Charts Area */}
-                        <div className="flex flex-col lg:flex-row gap-6 mt-6">
-                            {/* Main Line Chart Mockup */}
-                            <div className="flex-1 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 min-h-[300px] sm:min-h-[400px] flex flex-col">
-                                <div className="flex justify-between items-center mb-6">
-                                    <h3 className="font-bold text-lg text-gray-800">แนวโน้มยอดขาย (Sales Trend)</h3>
-                                </div>
-                                <div className="flex-1 relative w-full flex items-end justify-between px-4 pb-8 pt-4">
-                                    {/* Grid Lines */}
-                                    <div className="absolute inset-0 flex flex-col justify-between">
-                                        {[0, 1, 2, 3, 4].map((i) => (
-                                            <div key={i} className="border-b border-gray-100 w-full flex-[1_1_0]"></div>
-                                        ))}
+                        {/* Top Global Header (matching mockup top bar) */}
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white p-3 rounded-2xl md:rounded-full shadow-sm border border-gray-100 pl-4 pr-3">
+                            <div className="relative w-full md:w-96 flex-shrink-0">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <input type="text" placeholder="Search task..." className="w-full pl-10 pr-12 py-2.5 bg-gray-50/50 border-none rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm font-medium" />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white px-2 py-0.5 rounded text-[10px] text-gray-500 font-bold border border-gray-200">⌘ F</div>
+                            </div>
+                            <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+                                <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition drop-shadow-sm"><Mail size={16} /></button>
+                                <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition drop-shadow-sm relative">
+                                    <MessageCircle size={16} />
+                                    <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+                                </button>
+                                <div className="flex items-center gap-3 pl-2 sm:pl-4 border-none">
+                                    <div className="hidden sm:block text-right">
+                                        <p className="text-sm font-bold text-gray-900 leading-tight">Admin Manager</p>
+                                        <p className="text-xs text-gray-500 font-medium tracking-tight">admin@mockpos.com</p>
                                     </div>
-                                    {/* SVG Graph Mock (Smooth curve) */}
-                                    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                                        <defs>
-                                            <linearGradient id="revGradient" x1="0" x2="0" y1="0" y2="1">
-                                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-                                                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-                                            </linearGradient>
-                                        </defs>
-                                        <path d="M0,70 Q10,80 20,60 T40,50 T60,65 T80,40 T100,50 L100,100 L0,100 Z" fill="url(#revGradient)" />
-                                        <path d="M0,70 Q10,80 20,60 T40,50 T60,65 T80,40 T100,50" fill="none" stroke="#3b82f6" strokeWidth="3" />
-                                        {/* Points */}
-                                        <circle cx="20" cy="60" r="4" fill="#fff" stroke="#3b82f6" strokeWidth="2" />
-                                        <circle cx="40" cy="50" r="4" fill="#fff" stroke="#3b82f6" strokeWidth="2" />
-                                        <circle cx="60" cy="65" r="4" fill="#fff" stroke="#3b82f6" strokeWidth="2" />
-                                        <circle cx="80" cy="40" r="5" fill="#3b82f6" />
-                                    </svg>
-                                    {/* X-Axis Labels */}
-                                    <div className="absolute bottom-0 inset-x-4 flex justify-between text-xs text-gray-400 font-medium z-10">
-                                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                                    <div className="w-10 h-10 bg-yellow-100 rounded-full overflow-hidden shadow-sm shrink-0 border border-gray-200 p-0.5">
+                                        <img src="https://i.pravatar.cc/150?img=11" alt="Admin" className="w-full h-full object-cover rounded-full" />
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Summary Donut Chart Mockup */}
-                            <div className="w-full lg:w-80 xl:w-96 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] shadow-sm border border-gray-100 flex flex-col">
-                                <h3 className="font-bold text-lg text-gray-800 mb-6">สัดส่วนยอดขายตามหมวดหมู่</h3>
-                                <div className="flex-1 flex flex-col items-center justify-center">
-                                    <div className="w-48 h-48 rounded-full border-[16px] border-gray-100 relative mb-6">
-                                        {/* CSS Hack for donut segments mockup */}
-                                        <div className="absolute inset-0 rounded-full border-[16px] border-blue-500" style={{ clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 50%)' }}></div>
-                                        <div className="absolute inset-0 rounded-full border-[16px] border-orange-400" style={{ clipPath: 'polygon(50% 50%, 0 50%, 0 0, 50% 0)' }}></div>
+                        {/* Dashboard Header */}
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-6">
+                            <div>
+                                <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-2 tracking-tight">Dashboard</h1>
+                                <p className="text-gray-400 font-medium text-sm sm:text-base">Plan, prioritize, and accomplish your tasks with ease.</p>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                <button className="px-5 py-2.5 bg-yellow-400 text-black font-bold text-sm rounded-full flex items-center gap-2 hover:bg-yellow-500 transition shadow-sm">
+                                    <Plus size={16} /> Add Project
+                                </button>
+                                <button className="px-5 py-2.5 border border-yellow-400 text-yellow-900 font-bold text-sm bg-white rounded-full hover:bg-yellow-50 transition shadow-sm">
+                                    Import Data
+                                </button>
+                            </div>
+                        </div>
 
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                            <span className="text-gray-400 text-xs font-bold">ยอดรวม</span>
-                                            <span className="text-xl font-black text-gray-900">100%</span>
+                        {/* Bento Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+
+                            {/* KPI 1 - Active (Yellow instead of Green in Mockup) */}
+                            <div className="col-span-1 bg-yellow-500 p-6 rounded-3xl shadow-sm flex flex-col justify-between relative overflow-hidden group cursor-pointer hover:shadow-md transition duration-300">
+                                <div className="absolute top-6 right-6 w-8 h-8 bg-white rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition duration-300 shadow-sm"><TrendingUp size={16} className="text-yellow-600" /></div>
+                                <div>
+                                    <p className="text-yellow-900 text-sm font-bold mb-2">Total Revenue</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-white mb-6 tracking-tight drop-shadow-sm">฿ 45k</p>
+                                </div>
+                                <div className="inline-flex max-w-max items-center gap-2 bg-yellow-600/30 px-2 py-1.5 rounded-xl border border-yellow-400/20 backdrop-blur-sm">
+                                    <div className="bg-yellow-100 text-yellow-700 text-[10px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5">5<TrendingUp size={10} /></div>
+                                    <p className="text-xs text-yellow-50 font-medium">Increased from last month</p>
+                                </div>
+                            </div>
+
+                            {/* KPI 2 */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
+                                <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
+                                <div>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Ended Projects</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">10</p>
+                                </div>
+                                <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
+                                    <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">6<TrendingUp size={10} /></div>
+                                    <p className="text-xs font-medium">Increased from last week</p>
+                                </div>
+                            </div>
+
+                            {/* KPI 3 */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
+                                <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
+                                <div>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Running Projects</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">12</p>
+                                </div>
+                                <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
+                                    <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">2<TrendingUp size={10} /></div>
+                                    <p className="text-xs font-medium">Increased from last month</p>
+                                </div>
+                            </div>
+
+                            {/* KPI 4 */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
+                                <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
+                                <div>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Pending Project</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">2</p>
+                                </div>
+                                <div className="inline-flex max-w-max items-center gap-2 text-emerald-500">
+                                    <p className="text-sm font-bold">On Discuss</p>
+                                </div>
+                            </div>
+
+                            {/* Analytics Chart (Span 2) */}
+                            <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 min-h-[300px] flex flex-col mt-2">
+                                <h3 className="text-lg font-bold text-gray-900 mb-8">Project Analytics</h3>
+                                <div className="flex-1 flex items-end justify-between gap-1 sm:gap-4 px-2 sm:px-4 pb-6 relative">
+                                    {/* Abstract rounded bars mocking the mockup exactly */}
+                                    <div className="w-full h-full absolute inset-0 flex items-end justify-between px-2 sm:px-6 pb-8 gap-2 xs:gap-4">
+                                        <div className="flex-1 h-[45%] bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,#e5e7eb_4px,#e5e7eb_6px)] rounded-full"></div>
+                                        <div className="flex-1 h-[60%] bg-black rounded-full"></div>
+                                        <div className="flex-1 h-[75%] bg-yellow-400 rounded-full relative group shadow-sm flex items-start justify-center pt-2">
+                                            <div className="bg-white/80 backdrop-blur-sm border border-white text-gray-600 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm inline-block">74%</div>
+                                            {/* little line */}
+                                            <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[1px] h-4 bg-white/50"></div>
                                         </div>
+                                        <div className="flex-1 h-[90%] bg-gray-800 rounded-full"></div>
+                                        <div className="flex-1 h-[70%] bg-[repeating-linear-gradient(-45deg,transparent,transparent_4px,#e5e7eb_4px,#e5e7eb_6px)] rounded-full"></div>
+                                        <div className="flex-1 h-[55%] bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,#e5e7eb_4px,#e5e7eb_6px)] rounded-full"></div>
+                                        <div className="flex-1 h-[40%] bg-[repeating-linear-gradient(-45deg,transparent,transparent_4px,#e5e7eb_4px,#e5e7eb_6px)] rounded-full hidden sm:block"></div>
                                     </div>
-                                    <div className="w-full space-y-3">
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="flex items-center gap-2 font-medium text-gray-700"><div className="w-3 h-3 rounded-full bg-blue-500"></div> อาหารจานหลัก</span>
-                                            <span className="font-bold text-gray-900">75%</span>
+                                </div>
+                                <div className="flex justify-between px-6 text-[11px] font-bold text-gray-400 tracking-widest mt-auto">
+                                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span className="hidden sm:inline">S</span>
+                                </div>
+                            </div>
+
+                            {/* Reminders / Next Action */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
+                                <h3 className="text-lg font-bold text-gray-900 mb-6">Reminders</h3>
+                                <div className="flex-1 flex flex-col justify-center">
+                                    <h4 className="text-[1.35rem] font-bold text-gray-900 leading-tight mb-3">Meeting with Arc<br />Company</h4>
+                                    <p className="text-sm font-medium text-gray-400 mb-6 flex items-center gap-1 group">Time : 02.00 pm - 04.00 pm</p>
+                                    <button className="w-full py-4 bg-yellow-400 text-black font-bold rounded-2xl flex justify-center items-center gap-2 hover:bg-yellow-500 transition mt-auto shadow-md shadow-yellow-400/20">
+                                        <Activity size={18} /> Start Meeting
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Project / Top Items */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="text-lg font-bold text-gray-900">Project</h3>
+                                    <button className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-[11px] font-bold text-gray-600 flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> New</button>
+                                </div>
+                                <div className="space-y-5 flex-1 mt-2">
+                                    {[
+                                        { name: 'Develop API Endpoints', date: 'Due date: Nov 26, 2024', icon: '✦', color: 'text-blue-600 bg-blue-50' },
+                                        { name: 'Onboarding Flow', date: 'Due date: Nov 28, 2024', icon: '❂', color: 'text-teal-600 bg-teal-50' },
+                                        { name: 'Build Dashboard', date: 'Due date: Nov 30, 2024', icon: '✽', color: 'text-emerald-500 bg-emerald-50' },
+                                        { name: 'Optimize Page Load', date: 'Due date: Dec 5, 2024', icon: '◔', color: 'text-yellow-600 bg-yellow-50' },
+                                        { name: 'Cross-Browser Testing', date: 'Due date: Dec 6, 2024', icon: '✿', color: 'text-purple-600 bg-purple-50' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-4 group cursor-pointer">
+                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0 ${item.color} group-hover:scale-110 transition`}>{item.icon}</div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition">{item.name}</p>
+                                                <p className="text-[10px] font-medium text-gray-400 mt-0.5">{item.date}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="flex items-center gap-2 font-medium text-gray-700"><div className="w-3 h-3 rounded-full bg-orange-400"></div> เครื่องดื่ม</span>
-                                            <span className="font-bold text-gray-900">25%</span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Team Collaboration / Customer Feed */}
+                            <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="text-lg font-bold text-gray-900">Team Collaboration</h3>
+                                    <button className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-full text-[11px] font-bold flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> Add Member</button>
+                                </div>
+                                <div className="space-y-4 flex-1">
+                                    {[
+                                        { name: 'Alexandra Deff', action: 'Github Project Repository', status: 'Completed', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', img: '1' },
+                                        { name: 'Edwin Adenike', action: 'Integrate User Authentication System', status: 'In Progress', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '11' },
+                                        { name: 'Isaac Oluwatemilorun', action: 'Develop Search and Filter Functionality', status: 'Pending', statusBg: 'bg-red-50', statusText: 'text-red-500', img: '33' },
+                                        { name: 'David Oshodi', action: 'Responsive Layout for Homepage', status: 'In Progress', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '12' },
+                                    ].map((c, i) => (
+                                        <div key={i} className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-2 pb-2 group">
+                                            <div className="w-10 h-10 rounded-full bg-blue-100 p-0.5 shrink-0 overflow-hidden">
+                                                <img src={`https://i.pravatar.cc/150?img=${c.img}`} className="w-full h-full rounded-full object-cover" alt="avatar" />
+                                            </div>
+                                            <div className="flex-1 min-w-[150px]">
+                                                <p className="text-sm font-bold text-gray-800 leading-tight">{c.name}</p>
+                                                <p className="text-[11px] font-medium text-gray-400 line-clamp-1 mt-0.5">Working on <span className="font-bold text-gray-600">{c.action}</span></p>
+                                            </div>
+                                            <div className={`px-2 py-1 rounded-md text-[9px] font-bold border border-white shrink-0 shadow-sm ${c.statusBg} ${c.statusText}`}>{c.status}</div>
                                         </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Project Progress / Goal Donut */}
+                            <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-between relative">
+                                <h3 className="text-lg font-bold text-gray-900 mb-6 self-start">Project Progress</h3>
+
+                                <div className="relative w-48 h-48 mt-2 mb-4">
+                                    {/* Mocking the thick donut outline from image */}
+                                    <svg className="w-full h-full transform -rotate-180" viewBox="0 0 100 100">
+                                        {/* Background Track (Hashed) */}
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="url(#stripes)" strokeWidth="18" />
+                                        {/* Pattern for stripes */}
+                                        <defs>
+                                            <pattern id="stripes" width="3" height="3" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                                                <rect width="1" height="3" fill="#9ca3af" />
+                                            </pattern>
+                                        </defs>
+                                        {/* Foreground Progress */}
+                                        <circle cx="50" cy="50" r="38" fill="transparent" stroke="#facc15" strokeWidth="18" strokeDasharray="238.7" strokeDashoffset="140" strokeLinecap="round" />
+                                    </svg>
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className="text-[2.5rem] font-bold text-gray-900 tracking-tighter leading-none mt-2">41%</span>
+                                        <span className="text-[10px] font-bold text-gray-400 mt-1">Project Ended</span>
+                                    </div>
+                                </div>
+                                <div className="mt-auto pt-4 flex gap-4 sm:gap-6 text-[11px] font-bold text-gray-500 w-full justify-center pb-2">
+                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-yellow-400 rounded-full"></div> Completed</div>
+                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-gray-900 rounded-full"></div> In Progress</div>
+                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#9ca3af_2px,#9ca3af_3px)] rounded-full"></div> Pending</div>
+                                </div>
+                            </div>
+
+                            {/* Time Tracker / POS Status */}
+                            <div className="col-span-1 bg-gray-900 p-6 rounded-3xl shadow-md flex flex-col justify-between text-white relative overflow-hidden group">
+                                {/* Wave Background Mockup */}
+                                <div className="absolute inset-0 opacity-40 mix-blend-overlay">
+                                    <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_top_right,transparent,transparent_10px,#000_10px,#000_20px)]"></div>
+                                </div>
+                                <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-yellow-400/10 blur-3xl rounded-full"></div>
+
+                                <h3 className="text-base font-bold text-gray-100 mb-4 z-10">Time Tracker</h3>
+                                <div className="flex-1 flex flex-col justify-center items-center z-10 py-6">
+                                    <p className="text-5xl font-medium tracking-tight mb-8 drop-shadow-lg font-mono">01<span className="opacity-80">:</span>24<span className="opacity-80">:</span>08</p>
+                                    <div className="flex gap-4">
+                                        <button className="w-12 h-12 bg-white text-gray-900 rounded-full flex items-center justify-center hover:bg-gray-100 transition shadow-lg"><Activity size={20} /></button>
+                                        <button className="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition shadow-lg"><div className="w-4 h-4 rounded-sm bg-white"></div></button>
                                     </div>
                                 </div>
                             </div>
