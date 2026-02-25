@@ -12,6 +12,7 @@ export default function App() {
   const [appMode, setAppMode] = useState<'customer' | 'pos' | 'cdp'>('pos');
   const [currentScreen, setCurrentScreen] = useState<'home' | 'detail' | 'cart'>('home');
   const [globalProducts, setGlobalProducts] = useState<Product[]>(products);
+  const [customerTable, setCustomerTable] = useState<Table | null>(null);
   const [tables, setTables] = useState<Table[]>([
     { id: 't1', name: 'T1', status: 'reserved', detail: 'Jhon ciena 11:30am', seats: 4, items: [] },
     { id: 't2', name: 'T2', status: 'checked-in', detail: 'Checked-in', seats: 2, items: [{ product: products[0], qty: 2, orderedBy: 'customer', status: 'served' }, { product: products[1], qty: 1, orderedBy: 'staff', status: 'cooking' }] },
@@ -24,6 +25,7 @@ export default function App() {
     { id: 't9', name: 'T9', status: 'free', detail: 'Free', seats: 2, items: [] },
   ]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [customerTableInfo, setCustomerTableInfo] = useState<Table | null>(null);
   const [cart, setCart] = useState<CartItem[]>([
     { id: 'c1', product: products[0], quantity: 1, size: 'M', orderedBy: 'customer', status: 'served' },
     { id: 'c2', product: products[1], quantity: 1, size: 'M', orderedBy: 'customer', status: 'cooking' },
@@ -50,6 +52,35 @@ export default function App() {
       }
       return item;
     }).filter(item => item.quantity > 0));
+  };
+
+  const handleSimulateCustomerScan = (table: Table) => {
+    setCustomerTableInfo(table);
+    setCart([]); // Empty the cart for a fresh start
+    setAppMode('customer');
+    setCurrentScreen('home');
+  };
+
+  const handleCustomerCheckout = () => {
+    if (!customerTableInfo || cart.length === 0) return;
+
+    // Add items to table
+    const itemsToAdd = cart.map(c => ({
+      product: c.product,
+      qty: c.quantity,
+      orderedBy: 'customer' as const,
+      status: 'pending' as const
+    }));
+
+    setTables(prev => prev.map(t => {
+      if (t.id === customerTableInfo.id) {
+        return { ...t, items: [...(t.items || []), ...itemsToAdd] };
+      }
+      return t;
+    }));
+
+    setCart([]);
+    setAppMode('pos');
   };
 
   return (
@@ -84,9 +115,9 @@ export default function App() {
       {appMode === 'customer' ? (
         <div className="flex items-center justify-center min-h-screen p-0 sm:p-8">
           <div className="w-full h-[100dvh] sm:h-[850px] sm:max-h-[90vh] sm:max-w-[400px] bg-white sm:rounded-[40px] shadow-2xl overflow-hidden relative">
-            {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} />}
+            {currentScreen === 'home' && <HomeScreen products={globalProducts} onNavigate={navigateTo} customerTable={customerTableInfo} />}
             {currentScreen === 'detail' && selectedProduct && <DetailScreen product={selectedProduct} onNavigate={navigateTo} onAddToCart={() => addToCart(selectedProduct)} />}
-            {currentScreen === 'cart' && <CartScreen cart={cart} onNavigate={navigateTo} onUpdateQuantity={updateQuantity} />}
+            {currentScreen === 'cart' && <CartScreen cart={cart} onNavigate={navigateTo} onUpdateQuantity={updateQuantity} onCheckout={handleCustomerCheckout} />}
           </div>
         </div>
       ) : appMode === 'pos' ? (
@@ -109,6 +140,7 @@ export default function App() {
               status: item.status || 'pending'
             })));
           }}
+          onSimulateCustomerScan={handleSimulateCustomerScan}
         />
       ) : (
         <CDPScreen products={globalProducts} setProducts={setGlobalProducts} tables={tables} setTables={setTables} />

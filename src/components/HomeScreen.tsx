@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Home, Search, ShoppingBag, Settings, Utensils, Coffee, Pizza, IceCream, Clock, CakeSlice, Gamepad2 } from 'lucide-react';
-import { Product } from '../types';
+import { Product, Table } from '../types';
 
-export function HomeScreen({ products, onNavigate }: { products: Product[], onNavigate: (screen: 'home' | 'detail' | 'cart', product?: Product) => void }) {
+export function HomeScreen({ products, onNavigate, customerTable }: { products: Product[], onNavigate: (screen: 'home' | 'detail' | 'cart', product?: Product) => void, customerTable?: Table | null }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -15,11 +15,11 @@ export function HomeScreen({ products, onNavigate }: { products: Product[], onNa
           <div></div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-lg font-bold text-gray-900 leading-tight">โต๊ะ T2</p>
+              <p className="text-lg font-bold text-gray-900 leading-tight">โต๊ะ {customerTable?.name || 'T2'}</p>
               <p className="text-xs text-gray-500">สถานะ: ทานที่ร้าน</p>
             </div>
             <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center cursor-pointer shadow-inner border-2 border-white outline outline-2 outline-blue-200">
-              <strong className="text-xl">T2</strong>
+              <strong className="text-xl">{customerTable?.name || 'T2'}</strong>
             </div>
           </div>
         </div>

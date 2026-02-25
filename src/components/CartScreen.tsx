@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronRight, Truck, ChevronLeft, Plus, Minus } from 'lucide-react';
 import { CartItem } from '../types';
 
-export function CartScreen({ cart, onNavigate, onUpdateQuantity }: { cart: CartItem[], onNavigate: (screen: 'home' | 'detail' | 'cart') => void, onUpdateQuantity?: (id: string, delta: number) => void }) {
+export function CartScreen({ cart, onNavigate, onUpdateQuantity, onCheckout }: { cart: CartItem[], onNavigate: (screen: 'home' | 'detail' | 'cart') => void, onUpdateQuantity?: (id: string, delta: number) => void, onCheckout?: () => void }) {
   const total = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   return (
@@ -56,7 +56,7 @@ export function CartScreen({ cart, onNavigate, onUpdateQuantity }: { cart: CartI
           </div>
         </div>
 
-        <button className="w-full bg-yellow-400 text-black rounded-2xl py-5 flex items-center justify-center font-bold text-lg relative group hover:bg-yellow-500 transition-colors" onClick={() => onNavigate('home')}>
+        <button className="w-full bg-yellow-400 text-black rounded-2xl py-5 flex items-center justify-center font-bold text-lg relative group hover:bg-yellow-500 transition-colors" onClick={() => { if (onCheckout) onCheckout(); else onNavigate('home'); }}>
           <span className="absolute left-6 w-8 h-8 bg-black/10 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
             <ChevronRight size={20} />
           </span>

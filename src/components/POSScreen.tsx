@@ -7,13 +7,15 @@ export function POSScreen({
   tables,
   setTables,
   cartItems,
-  setCartItems
+  setCartItems,
+  onSimulateCustomerScan
 }: {
   products: Product[];
   tables: Table[];
   setTables: React.Dispatch<React.SetStateAction<Table[]>>;
   cartItems: { product: Product, qty: number, orderedBy?: 'staff' | 'customer', status?: 'pending' | 'cooking' | 'served' }[];
   setCartItems: React.Dispatch<React.SetStateAction<{ product: Product, qty: number, orderedBy?: 'staff' | 'customer', status?: 'pending' | 'cooking' | 'served' }[]>>;
+  onSimulateCustomerScan?: (table: Table) => void;
 }) {
   // === STATE FOR MOCKUP ===
   const [member, setMember] = useState<{ name: string, phone: string, points: number, tier: string } | null>(null);
@@ -38,6 +40,10 @@ export function POSScreen({
 
   const [isMoveTableModalOpen, setIsMoveTableModalOpen] = useState(false);
   const [moveTableTarget, setMoveTableTarget] = useState<any>(null);
+
+  // QR Modal State
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [qrTableTarget, setQrTableTarget] = useState<Table | null>(null);
 
   const displayProducts = category === 'bestseller' ? products.filter((_, i) => i % 2 !== 0).slice(0, 3) : products;
 
@@ -425,15 +431,41 @@ export function POSScreen({
             <div className="flex gap-3">
               <button onClick={() => setIsFreeTableModalOpen(false)} className="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200">ยกเลิก</button>
               <button onClick={() => {
-                const updatedTables = tables.map(t => t.id === freeTableTarget.id ? { ...t, status: 'checked-in' as const, detail: 'Checked-in', items: [] } : t);
+                const newTable = { ...freeTableTarget, status: 'checked-in' as const, detail: 'Checked-in', items: [] };
+                const updatedTables = tables.map(t => t.id === freeTableTarget.id ? newTable : t);
                 setTables(updatedTables);
-                setSelectedTable(freeTableTarget);
+                setSelectedTable(newTable);
                 handleSetCart([]);
                 setIsFreeTableModalOpen(false);
+                setQrTableTarget(newTable);
+                setIsQRModalOpen(true);
               }} className="flex-1 py-3 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600">
                 เปิดโต๊ะ & พิมพ์ QR
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* QR Code Output Modal */}
+      {isQRModalOpen && qrTableTarget && (
+        <div className="absolute inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-[2rem] p-8 w-full max-w-sm shadow-2xl text-center relative">
+            <button onClick={() => setIsQRModalOpen(false)} className="absolute top-4 right-4 text-gray-400 p-2"><X size={24} /></button>
+
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">โต๊ะ {qrTableTarget.name}</h3>
+            <p className="text-gray-500 mb-6">สร้าง QR Code สั่งอาหารเสร็จสิ้น</p>
+
+            <div className="w-56 h-56 mx-auto bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-4 mb-8 flex items-center justify-center relative shadow-sm">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="Mock QR" className="w-full h-full opacity-80" />
+            </div>
+
+            <button onClick={() => {
+              setIsQRModalOpen(false);
+              if (onSimulateCustomerScan) onSimulateCustomerScan(qrTableTarget);
+            }} className="w-full py-4 bg-yellow-400 text-gray-900 font-bold rounded-xl hover:bg-yellow-500 transition-colors flex items-center justify-center gap-2">
+              จำลองให้ลูกค้าสแกนเข้าแอป
+            </button>
           </div>
         </div>
       )}
