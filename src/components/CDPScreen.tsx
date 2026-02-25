@@ -157,14 +157,14 @@ export function CDPScreen({
                         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-6">
                             <div>
                                 <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-2 tracking-tight">Dashboard</h1>
-                                <p className="text-gray-400 font-medium text-sm sm:text-base">Plan, prioritize, and accomplish your tasks with ease.</p>
+                                <p className="text-gray-400 font-medium text-sm sm:text-base">Monitor your restaurant performance and daily operations.</p>
                             </div>
                             <div className="flex flex-wrap gap-3">
                                 <button className="px-5 py-2.5 bg-yellow-400 text-black font-bold text-sm rounded-full flex items-center gap-2 hover:bg-yellow-500 transition shadow-sm">
-                                    <Plus size={16} /> Add Project
+                                    <Plus size={16} /> New Order
                                 </button>
                                 <button className="px-5 py-2.5 border border-yellow-400 text-yellow-900 font-bold text-sm bg-white rounded-full hover:bg-yellow-50 transition shadow-sm">
-                                    Import Data
+                                    Export Report
                                 </button>
                             </div>
                         </div>
@@ -189,11 +189,11 @@ export function CDPScreen({
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
-                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Ended Projects</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">10</p>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Completed Orders</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">142</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
-                                    <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">6<TrendingUp size={10} /></div>
+                                    <div className="bg-white text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-200 shadow-sm flex items-center gap-0.5">12<TrendingUp size={10} /></div>
                                     <p className="text-xs font-medium">Increased from last week</p>
                                 </div>
                             </div>
@@ -202,7 +202,7 @@ export function CDPScreen({
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
-                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Running Projects</p>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Active Tables</p>
                                     <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">12</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-gray-400">
@@ -215,11 +215,11 @@ export function CDPScreen({
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between relative group cursor-pointer hover:shadow-md transition duration-300">
                                 <div className="absolute top-6 right-6 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition shadow-sm"><TrendingUp size={16} className="text-gray-600" /></div>
                                 <div>
-                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Pending Project</p>
-                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">2</p>
+                                    <p className="text-gray-800 text-base font-bold mb-2 tracking-tight">Reservations</p>
+                                    <p className="text-4xl lg:text-[2.5rem] font-black text-gray-900 mb-6 tracking-tight">8</p>
                                 </div>
                                 <div className="inline-flex max-w-max items-center gap-2 text-emerald-500">
-                                    <p className="text-sm font-bold">On Discuss</p>
+                                    <p className="text-sm font-bold">Waiting List</p>
                                 </div>
                             </div>
 
@@ -251,10 +251,10 @@ export function CDPScreen({
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
                                 <h3 className="text-lg font-bold text-gray-900 mb-6">Reminders</h3>
                                 <div className="flex-1 flex flex-col justify-center">
-                                    <h4 className="text-[1.35rem] font-bold text-gray-900 leading-tight mb-3">Meeting with Arc<br />Company</h4>
+                                    <h4 className="text-[1.35rem] font-bold text-gray-900 leading-tight mb-3">Fresh Ingredients<br />Delivery</h4>
                                     <p className="text-sm font-medium text-gray-400 mb-6 flex items-center gap-1 group">Time : 02.00 pm - 04.00 pm</p>
                                     <button className="w-full py-4 bg-yellow-400 text-black font-bold rounded-2xl flex justify-center items-center gap-2 hover:bg-yellow-500 transition mt-auto shadow-md shadow-yellow-400/20">
-                                        <Activity size={18} /> Start Meeting
+                                        <Activity size={18} /> Confirm Stock
                                     </button>
                                 </div>
                             </div>
@@ -262,16 +262,16 @@ export function CDPScreen({
                             {/* Project / Top Items */}
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col mt-2">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-lg font-bold text-gray-900">Project</h3>
+                                    <h3 className="text-lg font-bold text-gray-900">Kitchen Alerts</h3>
                                     <button className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-[11px] font-bold text-gray-600 flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> New</button>
                                 </div>
                                 <div className="space-y-5 flex-1 mt-2">
                                     {[
-                                        { name: 'Develop API Endpoints', date: 'Due date: Nov 26, 2024', icon: '✦', color: 'text-blue-600 bg-blue-50' },
-                                        { name: 'Onboarding Flow', date: 'Due date: Nov 28, 2024', icon: '❂', color: 'text-teal-600 bg-teal-50' },
-                                        { name: 'Build Dashboard', date: 'Due date: Nov 30, 2024', icon: '✽', color: 'text-emerald-500 bg-emerald-50' },
-                                        { name: 'Optimize Page Load', date: 'Due date: Dec 5, 2024', icon: '◔', color: 'text-yellow-600 bg-yellow-50' },
-                                        { name: 'Cross-Browser Testing', date: 'Due date: Dec 6, 2024', icon: '✿', color: 'text-purple-600 bg-purple-50' }
+                                        { name: 'Table 5 - Waiting Food', date: 'Overdue: 15 mins', icon: '✦', color: 'text-red-500 bg-red-50' },
+                                        { name: 'New Online Order #102', date: 'Pending acceptance', icon: '❂', color: 'text-blue-600 bg-blue-50' },
+                                        { name: 'Low Stock: Salmon', date: 'Remaining: 2 KG', icon: '✽', color: 'text-yellow-600 bg-yellow-50' },
+                                        { name: 'Table 8 - Check Bill', date: 'Waiting for staff', icon: '◔', color: 'text-emerald-500 bg-emerald-50' },
+                                        { name: 'VIP Customer Joined', date: 'Table 2', icon: '✿', color: 'text-purple-600 bg-purple-50' }
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-center gap-4 group cursor-pointer">
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0 ${item.color} group-hover:scale-110 transition`}>{item.icon}</div>
@@ -287,23 +287,23 @@ export function CDPScreen({
                             {/* Team Collaboration / Customer Feed */}
                             <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-lg font-bold text-gray-900">Team Collaboration</h3>
-                                    <button className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-full text-[11px] font-bold flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> Add Member</button>
+                                    <h3 className="text-lg font-bold text-gray-900">Recent Transactions</h3>
+                                    <button className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-full text-[11px] font-bold flex items-center gap-1 hover:bg-gray-50 drop-shadow-sm"><Plus size={12} /> View All</button>
                                 </div>
                                 <div className="space-y-4 flex-1">
                                     {[
-                                        { name: 'Alexandra Deff', action: 'Github Project Repository', status: 'Completed', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', img: '1' },
-                                        { name: 'Edwin Adenike', action: 'Integrate User Authentication System', status: 'In Progress', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '11' },
-                                        { name: 'Isaac Oluwatemilorun', action: 'Develop Search and Filter Functionality', status: 'Pending', statusBg: 'bg-red-50', statusText: 'text-red-500', img: '33' },
-                                        { name: 'David Oshodi', action: 'Responsive Layout for Homepage', status: 'In Progress', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '12' },
+                                        { name: 'Alexandra Deff', action: 'Table 5 - Dinner Course', status: 'Completed', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', img: '1' },
+                                        { name: 'Edwin Adenike', action: 'Takeaway - Order #142', status: 'In Kitchen', statusBg: 'bg-yellow-50', statusText: 'text-yellow-600', img: '11' },
+                                        { name: 'Isaac Oluwatemilorun', action: 'Table 8 - Family Set', status: 'Pending', statusBg: 'bg-red-50', statusText: 'text-red-500', img: '33' },
+                                        { name: 'David Oshodi', action: 'Delivery - GrabFood', status: 'On the way', statusBg: 'bg-blue-50', statusText: 'text-blue-600', img: '12' },
                                     ].map((c, i) => (
                                         <div key={i} className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-2 pb-2 group">
-                                            <div className="w-10 h-10 rounded-full bg-blue-100 p-0.5 shrink-0 overflow-hidden">
+                                            <div className="w-10 h-10 rounded-full bg-yellow-100 p-0.5 shrink-0 overflow-hidden">
                                                 <img src={`https://i.pravatar.cc/150?img=${c.img}`} className="w-full h-full rounded-full object-cover" alt="avatar" />
                                             </div>
                                             <div className="flex-1 min-w-[150px]">
                                                 <p className="text-sm font-bold text-gray-800 leading-tight">{c.name}</p>
-                                                <p className="text-[11px] font-medium text-gray-400 line-clamp-1 mt-0.5">Working on <span className="font-bold text-gray-600">{c.action}</span></p>
+                                                <p className="text-[11px] font-medium text-gray-400 line-clamp-1 mt-0.5">Order: <span className="font-bold text-gray-600">{c.action}</span></p>
                                             </div>
                                             <div className={`px-2 py-1 rounded-md text-[9px] font-bold border border-white shrink-0 shadow-sm ${c.statusBg} ${c.statusText}`}>{c.status}</div>
                                         </div>
@@ -313,7 +313,7 @@ export function CDPScreen({
 
                             {/* Project Progress / Goal Donut */}
                             <div className="col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-between relative">
-                                <h3 className="text-lg font-bold text-gray-900 mb-6 self-start">Project Progress</h3>
+                                <h3 className="text-lg font-bold text-gray-900 mb-6 self-start">Daily Sales Goal</h3>
 
                                 <div className="relative w-48 h-48 mt-2 mb-4">
                                     {/* Mocking the thick donut outline from image */}
@@ -331,13 +331,12 @@ export function CDPScreen({
                                     </svg>
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                                         <span className="text-[2.5rem] font-bold text-gray-900 tracking-tighter leading-none mt-2">41%</span>
-                                        <span className="text-[10px] font-bold text-gray-400 mt-1">Project Ended</span>
+                                        <span className="text-[10px] font-bold text-gray-400 mt-1">Goal Reached</span>
                                     </div>
                                 </div>
                                 <div className="mt-auto pt-4 flex gap-4 sm:gap-6 text-[11px] font-bold text-gray-500 w-full justify-center pb-2">
-                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-yellow-400 rounded-full"></div> Completed</div>
-                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-gray-900 rounded-full"></div> In Progress</div>
-                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#9ca3af_2px,#9ca3af_3px)] rounded-full"></div> Pending</div>
+                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-yellow-400 rounded-full"></div> Reached</div>
+                                    <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#9ca3af_2px,#9ca3af_3px)] rounded-full"></div> Remaining</div>
                                 </div>
                             </div>
 
@@ -349,7 +348,7 @@ export function CDPScreen({
                                 </div>
                                 <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-yellow-400/10 blur-3xl rounded-full"></div>
 
-                                <h3 className="text-base font-bold text-gray-100 mb-4 z-10">Time Tracker</h3>
+                                <h3 className="text-base font-bold text-gray-100 mb-4 z-10">POS Uptime</h3>
                                 <div className="flex-1 flex flex-col justify-center items-center z-10 py-6">
                                     <p className="text-5xl font-medium tracking-tight mb-8 drop-shadow-lg font-mono">01<span className="opacity-80">:</span>24<span className="opacity-80">:</span>08</p>
                                     <div className="flex gap-4">
@@ -364,10 +363,10 @@ export function CDPScreen({
 
                 {/* --- INSIGHT TAB --- */}
                 {activeTab === 'insight' && (
-                    <div className="p-4 sm:p-8 max-w-7xl mx-auto animate-in fade-in duration-300">
+                    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4 md:gap-0">
                             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                                <Users className="text-blue-600" /> Customer Insight
+                                <Users className="text-yellow-500" /> Customer Insight
                             </h1>
                             {/* Search Box per requirements */}
                             <div className="relative w-full md:w-80">
@@ -375,7 +374,7 @@ export function CDPScreen({
                                 <input
                                     type="text"
                                     placeholder="ค้นหาเบอร์โทร / ชื่อลูกค้า..."
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-blue-500 shadow-sm"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
                                 />
                             </div>
                         </div>
@@ -389,13 +388,13 @@ export function CDPScreen({
                                     </div>
                                     <h2 className="text-xl font-bold text-gray-900">Chayamon Naticharat</h2>
                                     <p className="text-gray-500 font-medium mt-1 mb-4">086-360-5383</p>
-                                    <div className="px-4 py-1.5 bg-blue-50 text-blue-600 font-bold rounded-full text-sm mb-6">
-                                        SILVER TIER
+                                    <div className="px-4 py-1.5 bg-yellow-100 text-yellow-700 font-bold rounded-full text-sm mb-6 flex items-center gap-1 shadow-sm border border-yellow-200">
+                                        <TrendingUp size={14} /> VIP MEMBER
                                     </div>
                                     <div className="flex gap-3 mb-8">
-                                        <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-blue-500 hover:bg-blue-50 transition-colors"><MessageCircle size={18} /></button>
-                                        <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-blue-500 hover:bg-blue-50 transition-colors"><Phone size={18} /></button>
-                                        <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-blue-500 hover:bg-blue-50 transition-colors"><Mail size={18} /></button>
+                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><MessageCircle size={18} /></button>
+                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><Phone size={18} /></button>
+                                        <button className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 transition shadow-sm"><Mail size={18} /></button>
                                     </div>
 
                                     <div className="w-full text-left space-y-4">
@@ -420,7 +419,7 @@ export function CDPScreen({
                             {/* Dashboard Data specific to Customer */}
                             <div className="flex-1 space-y-6">
                                 <div className="flex gap-4 border-b border-gray-200">
-                                    <button className="px-6 py-3 font-bold text-blue-600 border-b-2 border-blue-600 flex items-center gap-2"><Activity size={18} /> ข้อมูลการใช้จ่าย</button>
+                                    <button className="px-6 py-3 font-bold text-gray-900 border-b-2 border-yellow-400 flex items-center gap-2"><Activity size={18} /> ข้อมูลการใช้จ่าย</button>
                                 </div>
 
                                 {/* Spending Overview */}
@@ -434,7 +433,7 @@ export function CDPScreen({
                                         </div>
                                         <div className="text-center">
                                             <p className="text-gray-500 font-medium mb-1">Visit Total</p>
-                                            <p className="text-4xl font-extrabold text-blue-600">5</p>
+                                            <p className="text-4xl font-extrabold text-gray-900">5</p>
                                         </div>
                                         <div className="text-center">
                                             <p className="text-gray-500 font-medium mb-1">Average spending</p>
@@ -469,10 +468,10 @@ export function CDPScreen({
 
                 {/* --- ANALYSIS (BEST SELLERS) TAB --- */}
                 {activeTab === 'analysis' && (
-                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
+                    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
                             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <TrendingUp className="text-blue-600" /> วิเคราะห์สินค้าขายดี (Product Analysis)
+                                <TrendingUp className="text-yellow-500" /> วิเคราะห์สินค้าขายดี (Product Analysis)
                             </h1>
                             <div className="bg-white px-4 py-2 border border-gray-200 rounded-xl font-medium text-gray-600 text-sm shadow-sm">
                                 วิเคราะห์จากข้อมูลการสั่งของลูกค้า 30 วันย้อนหลัง
@@ -592,9 +591,9 @@ export function CDPScreen({
 
                 {/* --- SETTING TAB --- */}
                 {activeTab === 'setting' && (
-                    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-300">
+                    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-300 bg-gray-50/50 font-sans">
                         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6 sm:mb-8">
-                            <Settings className="text-blue-600" /> ระบบจัดตั้งค่าร้านค้า (Settings)
+                            <Settings className="text-yellow-500" /> ระบบจัดตั้งค่าร้านค้า (Settings)
                         </h1>
 
                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
@@ -602,13 +601,13 @@ export function CDPScreen({
                             <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2"><Utensils size={20} /> จัดการเมนูอาหาร</h3>
-                                    <button onClick={handleAddProduct} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 font-bold px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors">
+                                    <button onClick={handleAddProduct} className="flex items-center gap-1 text-sm bg-yellow-400 text-black font-bold px-3 py-1.5 rounded-lg hover:bg-yellow-500 transition shadow-sm">
                                         <Plus size={16} /> เพิ่มเมนูใหม่
                                     </button>
                                 </div>
                                 <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                                     {products.map(product => (
-                                        <div key={product.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-xl hover:border-blue-200 transition-colors">
+                                        <div key={product.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-xl hover:border-yellow-400 hover:shadow-sm transition bg-white">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden shrink-0">
                                                     <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
@@ -619,7 +618,7 @@ export function CDPScreen({
                                                 </div>
                                             </div>
                                             <div className="flex gap-2 shrink-0">
-                                                <button onClick={() => handleEditProduct(product.id)} className="p-2 text-gray-400 hover:text-blue-500 bg-gray-50 rounded-lg"><Edit3 size={16} /></button>
+                                                <button onClick={() => handleEditProduct(product.id)} className="p-2 text-gray-400 hover:text-yellow-600 bg-gray-50 rounded-lg transition"><Edit3 size={16} /></button>
                                                 <button onClick={() => handleDeleteProduct(product.id)} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 rounded-lg"><Trash2 size={16} /></button>
                                             </div>
                                         </div>
@@ -631,18 +630,18 @@ export function CDPScreen({
                             <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
                                 <div className="flex justify-between items-center mb-4 sm:mb-6">
                                     <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2"><Coffee size={20} /> จัดการโต๊ะนั่ง</h3>
-                                    <button onClick={handleAddTable} className="flex items-center gap-1 text-sm bg-green-50 text-green-600 font-bold px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">
+                                    <button onClick={handleAddTable} className="flex items-center gap-1 text-sm bg-yellow-400 text-black font-bold px-3 py-1.5 rounded-lg hover:bg-yellow-500 transition shadow-sm">
                                         <Plus size={16} /> เพิ่มโต๊ะ
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[500px] overflow-y-auto pr-2">
                                     {tables.map(table => (
-                                        <div key={table.id} className={`border ${table.status === 'free' ? 'border-emerald-200' : table.status === 'reserved' ? 'border-amber-200' : 'border-orange-200'} rounded-xl p-4 flex flex-col items-center justify-center relative group hover:shadow-md transition-all`}>
+                                        <div key={table.id} className={`border ${table.status === 'free' ? 'border-emerald-200 bg-white' : table.status === 'reserved' ? 'border-amber-200 bg-white' : 'border-orange-200 bg-white'} rounded-xl p-4 flex flex-col items-center justify-center relative group hover:shadow-md transition-all`}>
                                             <span className="font-black text-xl text-gray-800">{table.name}</span>
                                             <span className="text-xs text-gray-500 font-medium">{table.seats} Seats</span>
                                             <span className="text-[10px] font-bold mt-1 uppercase text-gray-400">{table.status}</span>
                                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                                                <button onClick={() => handleEditTable(table.id)} className="text-gray-400 hover:text-blue-500"><Edit3 size={14} /></button>
+                                                <button onClick={() => handleEditTable(table.id)} className="text-gray-400 hover:text-yellow-600 transition"><Edit3 size={14} /></button>
                                                 <button onClick={() => {
                                                     if (confirm(`ต้องการลบโต๊ะ ${table.name}?`)) {
                                                         setTables(tables.filter(t => t.id !== table.id));
